@@ -13,6 +13,6 @@ app.use(express_1.default.json());
 //routes
 app.get("/ping", (_req, res) => {
     console.log("testing pinging...");
-    res.send("pong");
+    res.send("poeuuung");
 });
 exports.default = app;
