@@ -1,6 +1,8 @@
 // server.js
 
 import express, { Application } from "express";
+import testRoutes from "./routes/testRoutes";
+
 
 const app: Application = express();
 
@@ -11,13 +13,10 @@ app.use(express.json());
 //
 //routes
 app.get("/ping", (_req, res) => {
-  const func = (x: number) => {
-    console.log(x);
-  };
-  const x: number = 33;
-  func(x);
-  console.log("teesting piung...");
+  console.log("teesting ping...");
   res.send("poong");
 });
+
+app.use("/api1", testRoutes);
 
 export default app;
