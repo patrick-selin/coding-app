@@ -11,6 +11,17 @@ export const getTestItems = (_req: Request, res: Response) => {
   }
 };
 
-export const getTestItem = () => {
-    // todo
-}
+export const getTestItem = (req: Request, res: Response): void => {
+  try {
+    const id = req.params.id;
+    const item = getTestItemById(id);
+
+    if (item) {
+      res.json(item);
+    } else {
+      res.status(404).json({ error: `Test item with id ${id} not found` });
+    }
+  } catch (_error) {
+    res.status(500).json({ error: "Failed to fetch the test item" });
+  }
+};
