@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  app-server:
+    environment:
+      - NODE_ENV=development
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    ports:
+      - "3333:3333"
+    volumes:
+      - ./:/usr/src/app
+    # command: npx tsx watch src/index.ts
+  
