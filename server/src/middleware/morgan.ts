@@ -15,6 +15,7 @@ const skip = () => {
 morgan.token("req-body", (req: Request, _res: Response) =>
   JSON.stringify(req.body)
 );
+
 const morganMiddleware = morgan(
   ":method :url :status :res[content-length] - :response-time ms :req-body",
   { stream, skip }
