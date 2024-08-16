@@ -1,6 +1,10 @@
 // testController.js
 import { Request, Response } from "express";
-import { getAllTestItems, getTestItemById } from "../services/testService";
+import {
+  getAllTestItems,
+  getTestItemById,
+  createTestItem,
+} from "../services/testService";
 
 export const getTestItems = (_req: Request, res: Response) => {
   try {
@@ -23,5 +27,17 @@ export const getTestItem = (req: Request, res: Response): void => {
     }
   } catch (_error) {
     res.status(500).json({ error: "Failed to fetch the test item" });
+  }
+};
+
+export const addTestItem = (req: Request, res: Response): void => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { content, important } = req.body;
+    // check if req.body ok, else erroria
+    const newItem = createTestItem(content, important);
+    res.status(201).json(newItem);
+  } catch (_error) {
+    res.status(500).json({ error: "Failed to create a test item" });
   }
 };

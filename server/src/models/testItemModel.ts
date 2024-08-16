@@ -1,10 +1,11 @@
-// testModel.js
+// testItemModel.js
 export interface TestItem {
   id: string;
   content: string;
   important: boolean;
 }
 
+// eslint-disable-next-line prefer-const
 export let testItems: TestItem[] = [
   {
     id: "1",
@@ -22,3 +23,7 @@ export let testItems: TestItem[] = [
     important: true,
   },
 ];
+
+export const addTestItem = (newItem: TestItem): void => {
+  testItems.push(newItem);
+};
