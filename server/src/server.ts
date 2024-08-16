@@ -3,7 +3,6 @@
 import express, { Application } from "express";
 import testRoutes from "./routes/testRoutes";
 
-
 const app: Application = express();
 
 //
