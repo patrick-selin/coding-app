@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 const TestComponent: React.FC = () => {
   const [randomNumber, setRandomNumber] = useState<number | null>(null);
 
