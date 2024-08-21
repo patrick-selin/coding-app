@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  app-server:
+    environment:
+      - NODE_ENV=development
+    build:
+      context: ./server
+      dockerfile: dev.Dockerfile
+    ports:
+      - "3333:3333"
+    volumes:
+      - ./server:/usr/src/app
+    depends_on:
+      - database
+    command: ["npx", "tsx", "watch", "src/index.ts"]
+
+  
+  database:
+    container_name: postgresql_db_coding_app
+    image: postgres:16.2
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  
+    env_file:
+      - .env
+
+  # pgadmin:
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4
+  #   ports:
+  #     - "8080:80"
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: "pgadmin@example.com"
+  #     PGADMIN_DEFAULT_PASSWORD: "pgadmin"
+  #   restart: unless-stopped    
+
+volumes:
+  postgres_data:
