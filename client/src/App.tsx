@@ -20,7 +20,14 @@ function App() {
       <TestComponent />
       <div>
         <h2>TestData</h2>
-        <ul></ul>
+        <ul>
+        {testData.map((item) => (
+            <li key={item.id}>
+              <h3>{item.content}</h3>
+              <p>{item.important ? "Important" : "Not Important"}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );
