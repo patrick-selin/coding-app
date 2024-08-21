@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [testData, setTestData] = useState([]);
-  console.log("Hello from the APP");
 
   useEffect(() => {
     testService.getAll().then((testItems) => {
@@ -21,7 +20,7 @@ function App() {
       <div>
         <h2>TestData</h2>
         <ul>
-        {testData.map((item) => (
+          {testData.map((item) => (
             <li key={item.id}>
               <h3>{item.content}</h3>
               <p>{item.important ? "Important" : "Not Important"}</p>
