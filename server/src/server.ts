@@ -18,8 +18,8 @@ app.get("/", (_req, res) => {
   res.send("Hello app");
 });
 app.get("/ping", (_req, res) => {
-  console.log("teesting ping...");
-  res.send("poong");
+  console.log("teeeesting ping...");
+  res.send("uuoong");
 });
 
 app.use("/api1", testRoutes);
