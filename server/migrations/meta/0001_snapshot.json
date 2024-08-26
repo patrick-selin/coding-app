@@ -1,0 +1,44 @@
+{
+  "id": "c486bc5f-83ae-4438-9009-f64524fb06a3",
+  "prevId": "9d73a54d-9374-4727-819d-7862c9a41207",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.test_items_two": {
+      "name": "test_items_two",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "important": {
+          "name": "important",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
