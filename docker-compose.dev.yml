@@ -19,6 +19,8 @@ services:
     container_name: postgresql_db_coding_app
     image: postgres:16.4-bullseye
     restart: unless-stopped
+    ports:
+      - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
