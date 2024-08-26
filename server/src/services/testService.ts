@@ -1,8 +1,13 @@
 // testServices.js
 import { addTestItem, TestItem, testItems } from "../models/testItemModel";
+import { db } from "../db/db";
+import { testItems as testItemsDb } from "../db/schema";
 
-export const getAllTestItems = (): TestItem[] => {
-  return testItems;
+export const getAllTestItems = async () => {
+  // return testItems;
+  const temp = await db.select().from(testItemsDb);
+  console.log(temp);
+  return await db.select().from(testItemsDb);
 };
 
 export const getTestItemById = (id: string): TestItem | undefined => {
