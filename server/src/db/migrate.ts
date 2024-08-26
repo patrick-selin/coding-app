@@ -4,7 +4,7 @@ import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/postgres-js";
 import "dotenv/config";
 
-const databaseUrl = process.env.DATABASE_URL as string;
+const databaseUrl = process.env.DATABASE_URL_MIGRATE as string;
 
 console.log(`Connecting to database: ${process.env.POSTGRES_DB}`);
 
