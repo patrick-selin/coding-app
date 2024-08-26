@@ -10,12 +10,12 @@ services:
       - "3333:3333"
     volumes:
       - ./server:/usr/src/app
-      - /usr/src/app/node_modules 
+      - /usr/src/app/node_modules
     depends_on:
-      - database
+      - database-sql
     command: ["npx", "tsx", "watch", "src/index.ts"]
 
-  database:
+  database-sql:
     container_name: postgresql_db_coding_app
     image: postgres:16.4-bullseye
     restart: unless-stopped
@@ -23,6 +23,17 @@ services:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - server/.env
+
+  playwright-e2e:
+    entrypoint: "/bin/true"
+    build:
+      context: ./playwright-e2e
+      dockerfile: dev.Dockerfile
+    network_mode: host
+    # depends_on:
+    #   - ui
+    volumes:
+      - ./playwright-e2e/tests:/usr/src/app/tests
 
   # pgadmin:
   #   container_name: pgadmin
