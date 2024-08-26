@@ -12,7 +12,6 @@ const app: Application = express();
 app.use(cors());
 app.use(express.json());
 app.use(morganMiddleware);
-
 //routes
 app.get("/", (_req, res) => {
   res.send("Hello app");
