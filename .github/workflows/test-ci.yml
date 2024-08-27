@@ -24,6 +24,7 @@ jobs:
 
       - name: Build
         run: npm run build
+        working-directory: ./client
 
       - name: Install frontend dependencies
         run: npm install
