@@ -22,16 +22,16 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Build
-        run: npm run build
-        working-directory: ./client
-
       - name: Install frontend dependencies
         run: npm install
         working-directory: ./client
 
       - name: Check style/lint
         run: npm run lint
+        working-directory: ./client
+        
+      - name: Build
+        run: npm run build
         working-directory: ./client
 
       - name: Run frontend tests
