@@ -7,7 +7,7 @@ import { unknownEndpoint } from "./middleware/unknownEndpoint";
 import testRoutes from "./routes/testRoutes";
 
 const app: Application = express();
-
+// test why commits aren't showing in github
 // middleware
 app.use(cors());
 app.use(express.json());
