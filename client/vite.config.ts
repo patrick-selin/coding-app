@@ -7,4 +7,8 @@ export default defineConfig({
   test: {
     environment: "jsdom",
   },
+  build: {
+    outDir: 'build', 
+    sourcemap: true,
+  },
 });
