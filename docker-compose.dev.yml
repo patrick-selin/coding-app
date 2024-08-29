@@ -26,6 +26,21 @@ services:
     env_file:
       - server/.env
 
+  client:
+    build:
+      context: ./client
+      dockerfile: dev.Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - server
+    environment:
+      - VITE_API_URL=http://localhost:3333
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
   # migrate:
   #   image: node:20.11.1-alpine
   #   volumes:
