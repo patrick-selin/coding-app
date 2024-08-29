@@ -11,4 +11,11 @@ export default defineConfig({
     outDir: 'build', 
     sourcemap: true,
   },
+  proxy: {
+    '/api1': {
+      target: 'http://server:3333',
+      changeOrigin: true,
+      secure: false,
+    },
+  },
 });
