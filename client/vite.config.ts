@@ -8,14 +8,17 @@ export default defineConfig({
     environment: "jsdom",
   },
   build: {
-    outDir: 'build', 
+    outDir: "dist",
     sourcemap: true,
   },
-  proxy: {
-    '/api1': {
-      target: 'http://server:3333',
-      changeOrigin: true,
-      secure: false,
+  server: {
+    proxy: {
+      "/api1": {
+        target: "http://localhost:3333",
+        changeOrigin: true,
+        secure: false, //
+        rewrite: (path) => path.replace(/^\/api1/, "/api1"),
+      },
     },
   },
 });
