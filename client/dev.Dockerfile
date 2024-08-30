@@ -5,12 +5,9 @@ WORKDIR /usr/src/app
 
 # Install dependencies
 COPY package*.json ./
-COPY tsconfig.json ./
-COPY vite.config.ts ./
-# ENV VITE_API_BASE_URL=http://localhost:3333/api1
-
 RUN npm install
 
+COPY tsconfig.json vite.config.ts ./
 COPY . .
 
 EXPOSE 5173
