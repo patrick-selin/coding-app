@@ -1,14 +1,12 @@
 # dev.Dockerfile for server/backend
 FROM node:20.11.1-alpine AS builder
 
-EXPOSE 3333
-
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
 RUN npm install && npm cache clean --force
-# RUN npm ci --only=production 
+RUN npm ci --only=production 
 
 COPY . .
 
@@ -22,6 +20,6 @@ RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
 RUN chown -R nodejs:nodejs /usr/src/app
 USER nodejs
 
-#use node, not npm
-# CMD ["npm", "run", "start"]
+EXPOSE 3333
+
 CMD ["npx", "tsx", "watch", "src/index.ts"]
