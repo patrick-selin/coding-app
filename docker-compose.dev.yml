@@ -40,20 +40,21 @@ services:
     depends_on:
       - server
     environment:
-      - VITE_API_URL=http://localhost:3333
+      - client/.env
     command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    # command: ["npm", "run", "dev"]
     expose:
       - "5173"
 
-  nginx:
-    image: nginx:1.27.1
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - server
-      - client
+  # nginx:
+  #   image: nginx:1.27.1
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+  #   depends_on:
+  #     - server
+  #     - client
 
   # migrate:
   #   image: node:20.11.1-alpine

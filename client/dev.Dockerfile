@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 COPY tsconfig.json ./
 COPY vite.config.ts ./
+# ENV VITE_API_BASE_URL=http://localhost:3333
 
 RUN npm install
 

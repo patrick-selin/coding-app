@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const baseUrl: string = "http://localhost:3333/api1/test";
+// const baseUrl: string = "http://localhost:3333/api1/";
+// const baseUrl: string = "http://server:3333/api1/";
+// const baseUrl: string = "/api1/test";
+const baseUrl = `${import.meta.env.VITE_API_BASE_URL}/api1/test`;
 
 const getAll = async () => {
   const request = axios.get(baseUrl);

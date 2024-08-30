@@ -3,11 +3,18 @@ import TestComponent from "./utils/test-component";
 import testService from "./services/test-service";
 import { useEffect, useState } from "react";
 
+interface TestItem {
+  id: number;
+  content: string;
+  important: boolean;
+}
+
 function App() {
-  const [testData, setTestData] = useState([]);
+  const [testData, setTestData] = useState<TestItem[]>([]);
 
   useEffect(() => {
     testService.getAll().then((testItems) => {
+      console.log("Fetched data:", testItems);
       setTestData(testItems);
     });
   }, []);
@@ -15,7 +22,6 @@ function App() {
   return (
     <>
       <h1>Vite + React with TS</h1>
-      <p>app</p>
       <TestComponent />
       <div>
         <h2>TestData</h2>
