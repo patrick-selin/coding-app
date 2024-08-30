@@ -1,6 +1,8 @@
+# docker-compose.dev.yml
 version: "3.8"
 services:
   server:
+    container_name: coding-app-server
     environment:
       - NODE_ENV=development
     build:
@@ -18,7 +20,7 @@ services:
       - "3333"
 
   database-sql:
-    container_name: postgresql_db_coding_app
+    container_name: coding-app-postgresql-db
     image: postgres:16.4-bullseye
     restart: unless-stopped
     ports:
@@ -29,11 +31,12 @@ services:
       - server/.env
 
   client:
+    container_name: coding-app-client
     build:
       context: ./client
       dockerfile: dev.Dockerfile
-    ports:
-      - "5173:5173"
+    # ports:
+    #   - "5173:5173"
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
@@ -41,20 +44,20 @@ services:
       - server
     environment:
       - client/.env
-    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
-    # command: ["npm", "run", "dev"]
+    # command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
     expose:
       - "5173"
 
-  # nginx:
-  #   image: nginx:1.27.1
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
-  #   depends_on:
-  #     - server
-  #     - client
+  nginx:
+    image: nginx:1.27.1
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    container_name: reverse-proxy
+    depends_on:
+      - server
+      - client
 
   # migrate:
   #   image: node:20.11.1-alpine

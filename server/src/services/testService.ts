@@ -5,7 +5,7 @@ import { testItems as testItemsDb } from "../db/schema";
 
 export const getAllTestItems = async () => {
   // return testItems;
-  const temp = await db.select().from(testItemsDb);
+  // const temp = await db.select().from(testItemsDb);
   // console.log(`HUU :: ${temp}`);
   return await db.select().from(testItemsDb);
 };
