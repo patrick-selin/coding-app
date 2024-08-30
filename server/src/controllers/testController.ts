@@ -9,7 +9,7 @@ import {
 export const getTestItems = async (_req: Request, res: Response) => {
   try {
     const items = await getAllTestItems();
-    // console.log(`ITEMS :: ${items}`);
+    console.log(`ITEMS :: ${items}`);
     res.json(items);
   } catch (_error) {
     res.status(500).json({ error: "Error" });
