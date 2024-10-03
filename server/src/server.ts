@@ -18,7 +18,7 @@ app.get("/", (_req, res) => {
 });
 app.get("/ping", (_req, res) => {
   console.log("teeeesting ping...");
-  res.send("uuoong");
+  res.send("poong");
 });
 
 app.use("/api1", testRoutes);

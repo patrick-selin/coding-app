@@ -59,15 +59,6 @@ services:
       - server
       - client
 
-  # migrate:
-  #   image: node:20.11.1-alpine
-  #   volumes:
-  #     - ./server:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   working_dir: /usr/src/app
-  #   command: ["npm", "run", "db:migrate:script"]
-  #   depends_on:
-  #     - database-sql
 
   # playwright-e2e:
   #   entrypoint: "/bin/true"
