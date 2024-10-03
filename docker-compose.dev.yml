@@ -59,7 +59,6 @@ services:
       - server
       - client
 
-
   # playwright-e2e:
   #   entrypoint: "/bin/true"
   #   build:
