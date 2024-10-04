@@ -1,11 +1,11 @@
-# Stage 1: Build
+# prod.Dockerfile for server/backend
 FROM node:20.11.1-alpine AS builder
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY . .
 
@@ -23,7 +23,7 @@ RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
 RUN chown -R nodejs:nodejs /usr/src/app
 USER nodejs
 
-EXPOSE 3333
+EXPOSE 3335
 
 ENV NODE_ENV=production
 

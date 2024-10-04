@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
+    "build": "tsc",      
     "dev": "tsx watch src/index.js",
     "lint": "eslint .",
     "test": "vitest",
