@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  server:
+    container_name: coding-app-server
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - ./server/.env.prod  
+    build:
+      context: ./server
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3335:3335"
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - database-sql
+    restart: unless-stopped
+    expose:
+      - "3335"
+
+  database-sql:
+    container_name: coding-app-postgresql-db
+    image: postgres:16.4-bullseye
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - server/.env.prod
+
+  client:
+    container_name: coding-app-client
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile.prod
+    depends_on:
+      - server
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.27.1-alpine
+    container_name: reverse-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - server
+      - client
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
