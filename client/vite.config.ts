@@ -12,14 +12,14 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: true,
   },
-  server: {
-    proxy: {
-      "/api1": {
-        target: "http://localhost:3333",
-        changeOrigin: true,
-        secure: false, //
-        rewrite: (path) => path.replace(/^\/api1/, "/api1"),
-      },
-    },
-  },
+  // server: {
+  //   proxy: {
+  //     "/api1": {
+  //       target: "http://localhost:3333",
+  //       changeOrigin: true,
+  //       secure: false, //
+  //       rewrite: (path) => path.replace(/^\/api1/, "/api1"),
+  //     },
+  //   },
+  // },
 });
