@@ -6,7 +6,7 @@ services:
     environment:
       - NODE_ENV=production
     env_file:
-      - ./server/.env.prod  
+      - ./server/.env.prod
     build:
       context: ./server
       dockerfile: Dockerfile.prod
@@ -40,18 +40,22 @@ services:
     depends_on:
       - server
     restart: unless-stopped
+    environment:
+      - client/.env.prod
+    expose:
+      - "5173"  
 
-  nginx:
-    image: nginx:1.27.1-alpine
-    container_name: reverse-proxy
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - server
-      - client
-    restart: unless-stopped
+  # nginx:
+  #   image: nginx:1.27.1-alpine
+  #   container_name: reverse-proxy
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+  #   depends_on:
+  #     - server
+  #     - client
+  #   restart: unless-stopped
 
 volumes:
   postgres_data:
