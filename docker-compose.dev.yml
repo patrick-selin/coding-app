@@ -18,6 +18,8 @@ services:
     command: ["npx", "tsx", "watch", "src/index.ts"]
     expose:
       - "3333"
+    env_file:
+      - server/.env.dev
 
   database-sql:
     container_name: coding-app-postgresql-db
@@ -35,29 +37,29 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.dev
-    # ports:
-    #   - "5173:5173"
+    ports:
+      - "5173:5173"
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
       - server
     environment:
-      - client/.env.dev
+      - client/.env.development
     # command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
     expose:
       - "5173"
 
-  nginx:
-    image: nginx:1.27.1
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
-    container_name: reverse-proxy
-    depends_on:
-      - server
-      - client
+  # nginx:
+  #   image: nginx:1.27.1
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+  #   container_name: reverse-proxy
+  #   depends_on:
+  #     - server
+  #     - client
 
   # playwright-e2e:
   #   entrypoint: "/bin/true"
