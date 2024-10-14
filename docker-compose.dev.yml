@@ -8,8 +8,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.dev
-    ports:
-      - "3333:3333"
+    # ports:
+    #   - "3333:3333"
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
@@ -25,8 +25,8 @@ services:
     container_name: coding-app-postgresql-db
     image: postgres:16.4-bullseye
     restart: unless-stopped
-    ports:
-      - 5432:5432
+    # ports:
+    #   - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -37,8 +37,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.dev
-    ports:
-      - "5173:5173"
+    # ports:
+    #   - "5173:5173"
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
@@ -50,16 +50,17 @@ services:
     expose:
       - "5173"
 
-  # nginx:
-  #   image: nginx:1.27.1
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
-  #   container_name: reverse-proxy
-  #   depends_on:
-  #     - server
-  #     - client
+  nginx:
+    image: nginx:1.27.1
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    container_name: reverse-proxy
+    restart: always
+    depends_on:
+      - server
+      - client
 
   # playwright-e2e:
   #   entrypoint: "/bin/true"
