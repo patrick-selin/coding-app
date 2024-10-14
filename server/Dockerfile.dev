@@ -22,4 +22,4 @@ USER nodejs
 
 EXPOSE 3333
 
-CMD ["npx", "tsx", "watch", "src/index.ts"]
+CMD ["npm", "run", "dev"]
