@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "build": "tsc",      
+    "build": "tsc",
     "dev": "tsx watch src/index.js",
     "lint": "eslint .",
     "test": "vitest",
-    "start": "tsc && node build/index.js",
+    "start": "NODE=production tsc && node build/src/index.js",
+    
     "db:generate": "drizzle-kit generate",
     "db:migrate:script": "tsx src/db/migrate.ts",
     "db:migrate": "drizzle-kit up"

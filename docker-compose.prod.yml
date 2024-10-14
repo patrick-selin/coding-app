@@ -10,8 +10,6 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.prod
-    ports:
-      - "3335:3335"
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
@@ -25,8 +23,6 @@ services:
     container_name: coding-app-postgresql-db
     image: postgres:16.4-bullseye
     restart: unless-stopped
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -37,18 +33,15 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.prod
-    ports:
-      - "5173:5173"
-    depends_on:
-      - server
+    # depends_on:
+    #   - server
     environment:
-      # - client/.env.production
-      - VITE_API_URL=http://localhost:3335/api1 
-    volumes:
-      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
-      - ./client/dist:/usr/share/nginx/html:ro 
+      - client/.env.production
+    # volumes:
+    #   - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+    #   - ./client/dist:/usr/share/nginx/html:ro 
     expose:
-      - "5173"
+      - "80"
 
   nginx:
     image: nginx:1.27.1-alpine
@@ -57,7 +50,6 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
-      - ./client/dist:/usr/share/nginx/html:ro 
     depends_on:
       - server
       - client
