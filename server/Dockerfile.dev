@@ -20,6 +20,4 @@ RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
 RUN chown -R nodejs:nodejs /usr/src/app
 USER nodejs
 
-EXPOSE 3333
-
 CMD ["npm", "run", "dev"]
