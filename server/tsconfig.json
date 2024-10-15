@@ -110,8 +110,8 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "src/**/*.ts", // Include your source files
-    "drizzle.config.ts" // Ensure this file is included
+    "src/**/*.ts", 
+    "drizzle.config.ts",
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "build"]
 }
