@@ -6,11 +6,10 @@
   "scripts": {
     "tsc": "tsc",
     "build": "tsc",
-    "dev": "tsx watch src/index.js",
+    "dev": "env NODE_ENV=development tsx watch src/index.js",
     "lint": "eslint .",
     "test": "vitest",
-    "start": "NODE=production tsc && node build/src/index.js",
-    
+    "start": "tsc && env NODE_ENV=production node build/src/index.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate:script": "tsx src/db/migrate.ts",
     "db:migrate": "drizzle-kit up"
