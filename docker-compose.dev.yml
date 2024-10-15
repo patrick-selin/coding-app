@@ -17,7 +17,7 @@ services:
     expose:
       - "3333"
     env_file:
-      - server/.env.dev
+      - server/.env.development
 
   database-sql:
     container_name: coding-app-postgresql-db
@@ -26,7 +26,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
-      - server/.env.dev
+      - server/.env.development
 
   client:
     container_name: coding-app-client
