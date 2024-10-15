@@ -25,7 +25,7 @@ jobs:
       - name: Check style/lint
         run: npm run lint
         working-directory: ./client
-        
+
       - name: Build
         run: npm run build
         working-directory: ./client
