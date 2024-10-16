@@ -1,3 +1,4 @@
+# docker-compose.prod.yml
 version: "3.8"
 
 services:
@@ -5,14 +6,15 @@ services:
     container_name: coding-app-server
     environment:
       - NODE_ENV=production
+      - PORT=3335
     env_file:
-      - ./server/.env.prod
+      - ./server/.env.production
     build:
       context: ./server
       dockerfile: Dockerfile.prod
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
+    # volumes:
+    #   - ./server:/usr/src/app
+    #   - /usr/src/app/node_modules
     depends_on:
       - database-sql
     restart: unless-stopped
@@ -26,20 +28,20 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
-      - server/.env.prod
+      - server/.env.production
 
   client:
     container_name: coding-app-client
     build:
       context: ./client
       dockerfile: Dockerfile.prod
-    # depends_on:
-    #   - server
+    depends_on:
+      - server
     environment:
       - client/.env.production
     # volumes:
     #   - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
-    #   - ./client/dist:/usr/share/nginx/html:ro 
+    #   - ./client/dist:/usr/share/nginx/html:ro
     expose:
       - "80"
 
