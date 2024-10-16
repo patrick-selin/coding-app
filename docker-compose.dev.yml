@@ -1,5 +1,6 @@
 # docker-compose.dev.yml
 version: "3.8"
+
 services:
   server:
     container_name: coding-app-server
