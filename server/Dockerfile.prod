@@ -1,4 +1,5 @@
 # prod.Dockerfile for server/backend
+# build ts app
 FROM node:20.11.1-alpine AS builder
 
 WORKDIR /usr/src/app
@@ -18,12 +19,19 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install --only=production
+RUN npm ci
 
-# COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app .
+COPY . .
+RUN npm run build
+
+# create prod image
+FROM node:20.11.1-alpine
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/package*.json ./
+COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/build ./build
-COPY --from=builder /usr/src/app/.env.production ./
 
 RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
 RUN chown -R nodejs:nodejs /usr/src/app
