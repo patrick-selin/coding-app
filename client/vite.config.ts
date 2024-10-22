@@ -10,6 +10,11 @@ export default defineConfig({
   },
   build: {
     outDir: "dist",
+    rollupOptions: {
+      output: {
+        format: 'es', // For ES module output
+      }
+    },
     sourcemap: true,
   },
   // server: {
