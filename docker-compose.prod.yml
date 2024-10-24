@@ -4,22 +4,19 @@ version: "3.8"
 services:
   server:
     container_name: coding-app-server
-    environment:
-      - NODE_ENV=production
-      - PORT=3335
+    # environment:
+    #   - NODE_ENV=production
+    #   - PORT=3335
     env_file:
       - ./server/.env.production
     build:
       context: ./server
       dockerfile: Dockerfile.prod
-    # volumes:
-    #   - ./server:/usr/src/app
-    #   - /usr/src/app/node_modules
     depends_on:
       - database-sql
     restart: unless-stopped
-    expose:
-      - "3335"
+    # expose:
+    #   - "3335"
 
   database-sql:
     container_name: coding-app-postgresql-db
@@ -39,14 +36,10 @@ services:
       - server
     environment:
       - client/.env.production
-    # volumes:
-    #   - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
-    #   - ./client/dist:/usr/share/nginx/html:ro
     expose:
       - "80"
 
   nginx:
-    # image: nginx:1.27.1-alpine
     build:
       context: ./client 
       dockerfile: Dockerfile.prod

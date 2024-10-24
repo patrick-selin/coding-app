@@ -37,9 +37,9 @@ RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
 RUN chown -R nodejs:nodejs /usr/src/app
 USER nodejs
 
-EXPOSE 3335
+# EXPOSE 3335
 
-ENV NODE_ENV=production
-ENV PORT=3335
+# ENV NODE_ENV=production
+# ENV PORT=3335
 
 CMD ["node", "build/src/index.js"]
