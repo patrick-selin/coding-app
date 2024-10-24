@@ -31,22 +31,23 @@ Before you begin, ensure you have the following installed on your machine:
 
 - Docker: [Install Docker](https://docs.docker.com/get-docker/)
 
-### Clone the Repository
-
+1. Clone the Repository
 ```bash
 git clone https://github.com/patrick-selin/coding-app.git
 cd coding-app
 ```
 
-### Environment Configuration
+2. Environment Configuration
 Ensure you configure the environment variables before running the application.
 
-1. Rename the file ".env.dev.EXAMPLE" -> .env.dev
-2. Database Configuration:
+- Rename the files: 
+    "./client.env.dev.EXAMPLE" -> .env.dev
+    "./server.env.dev.EXAMPLE" -> .env.dev
 
-Set your PostgreSQL connection URL in the following format:
+- Database Configuration:
 
-### Database Configuration
+3. Database Configuration
+ Database Configuration
 ```bash
 DATABASE_URL=postgres://<username>:<password>@<host>:<port>/<database_name>
 ```
@@ -87,3 +88,8 @@ The development environment consists of the following Docker services:
 ## Usage
 
 // in the making
+
+## Roadmap
+## Contributing
+## License
+## Contact
