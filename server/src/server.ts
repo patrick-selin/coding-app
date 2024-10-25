@@ -16,6 +16,7 @@ app.use(morganMiddleware);
 app.get("/", (_req, res) => {
   res.send("Hello app");
 });
+
 app.get("/ping", (_req, res) => {
   console.log("teeeesting ping...");
   res.send("poong");
