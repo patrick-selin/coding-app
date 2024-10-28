@@ -1,22 +1,19 @@
 # docker-compose.prod.yml
-version: "3.8"
 
 services:
   server:
     container_name: coding-app-server
-    # environment:
-    #   - NODE_ENV=production
-    #   - PORT=3335
-    env_file:
-      - ./server/.env.production
     build:
       context: ./server
       dockerfile: Dockerfile.prod
     depends_on:
       - database-sql
     restart: unless-stopped
-    # expose:
-    #   - "3335"
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+      SERVER_PORT: ${SERVER_PORT}
+      SERVER_HOST: ${SERVER_HOST}
 
   database-sql:
     container_name: coding-app-postgresql-db
@@ -24,8 +21,8 @@ services:
     restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - server/.env.production
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_URL}  
 
   client:
     container_name: coding-app-client
@@ -35,7 +32,7 @@ services:
     depends_on:
       - server
     environment:
-      - client/.env.production
+      VITE_BASE_URL: ${VITE_BASE_URL} 
     expose:
       - "80"
 
