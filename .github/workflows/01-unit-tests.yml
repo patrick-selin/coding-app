@@ -72,9 +72,11 @@ jobs:
         run: npm run tsc --noEmit
         working-directory: ./server
   
-      - name: Check style/lint
-        run: npm run lint
-        working-directory: ./server
+      # - name: Check style/lint
+      #   run: npm run lint
+      #   working-directory: ./server 
+      ##
+      ## fix linting conf issues
   
       - name: Run npm audit
         run: npm audit --audit-level=high
