@@ -19,7 +19,7 @@ export default tseslint.config({
   plugins: {
     "@stylistic": stylistic,
   },
-  ignores: ["build/*"],
+  ignores: ["build/*", "node_modules/"],
   rules: {
     "@stylistic/semi": "error",
     "@typescript-eslint/no-unsafe-assignment": "error",
