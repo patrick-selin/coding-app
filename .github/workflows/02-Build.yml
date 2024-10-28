@@ -7,8 +7,13 @@ on:
       - completed
 
 jobs:
-  build-client:
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: 
+          - client
+          - server
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,23 +26,22 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v4
         with:
-          path: ./client/node_modules
-          key: ${{ runner.os }}-client-node-${{ hashFiles('client/package-lock.json') }}
+          path: ${{ matrix.app == 'client' && './client/node_modules' || './server/node_modules' }}
+          key: ${{ runner.os }}-${{ matrix.app }}-node-${{ matrix.app == 'client' && hashFiles('client/package-lock.json') || hashFiles('server/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-client-node-
+            ${{ runner.os }}-${{ matrix.app }}-node-
 
-      - name: Install frontend dependencies
+      - name: Install dependencies
         run: npm ci
-        working-directory: ./client
+        working-directory: ${{ matrix.app == 'client' && './client' || './server' }}
 
-      - name: Build client
+      - name: Build application
         run: npm run build
-        working-directory: ./client
+        working-directory: ${{ matrix.app == 'client' && './client' || './server' }}
 
-      - name: Checkout code
-        uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3  
 
@@ -47,12 +51,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push to Docker Hub
         uses: docker/build-push-action@v5
         with:
-            context: ./client
-            file: ./client/Dockerfile.prod 
-            push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:latest
-            
-  
+          context: ${{ matrix.app == 'client' && './client' || './server' }}
+          file: ${{ matrix.app == 'client' && './client/Dockerfile.prod' || './server/Dockerfile.prod' }} 
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-latest
