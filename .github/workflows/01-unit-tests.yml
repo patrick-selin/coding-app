@@ -46,12 +46,8 @@ jobs:
         run: npm audit --audit-level=high
         working-directory: ./client
 
-      - name: Run frontend tests
+      - name: Run frontend unit tests
         run: npm run test
-        working-directory: ./client
-
-      - name: Build
-        run: npm run build
         working-directory: ./client
 
 
@@ -72,7 +68,19 @@ jobs:
         run: npm install
         working-directory: ./server
 
-      - name: Run tests
+      - name: Run TypeScript type checks
+        run: npm run tsc --noEmit
+        working-directory: ./server
+  
+      - name: Check style/lint
+        run: npm run lint
+        working-directory: ./server
+  
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+        working-directory: ./server  
+
+      - name: Run server unit tests
         run: npm run test
         working-directory: ./server
 
