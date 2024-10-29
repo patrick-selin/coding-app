@@ -10,7 +10,6 @@ This is a full-stack single-page-application built using Typescript/React, Node.
 
 - None yet
 - Setting up the project & infra
-  
 
 ## Technologies Used
 
@@ -32,22 +31,24 @@ Before you begin, ensure you have the following installed on your machine:
 - Docker: [Install Docker](https://docs.docker.com/get-docker/)
 
 1. Clone the Repository
+
 ```bash
 git clone https://github.com/patrick-selin/coding-app.git
 cd coding-app
 ```
 
 2. Environment Configuration
-Ensure you configure the environment variables before running the application.
+   Ensure you configure the environment variables before running the application.
 
-- Rename the files: 
-    "./client.env.dev.EXAMPLE" -> .env.dev
-    "./server.env.dev.EXAMPLE" -> .env.dev
+- Rename the files:
+  "./client.env.dev.EXAMPLE" -> .env.dev
+  "./server.env.dev.EXAMPLE" -> .env.dev
 
 - Database Configuration:
 
 3. Database Configuration
- Database Configuration
+   Database Configuration
+
 ```bash
 DATABASE_URL=postgres://<username>:<password>@<host>:<port>/<database_name>
 ```
@@ -79,8 +80,8 @@ The development environment consists of the following Docker services:
 - PostgreSQL Database: Runs as a service, accessible to the backend.
 - Nginx: Acts as a reverse proxy for the client and server.
 
+##
 
-##    
 ## CI/CD Pipeline
 
 // in the making
@@ -90,6 +91,11 @@ The development environment consists of the following Docker services:
 // in the making
 
 ## Roadmap
+
 ## Contributing
+
 ## License
+
 ## Contact
+
+## test
