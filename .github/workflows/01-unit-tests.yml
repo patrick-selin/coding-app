@@ -5,14 +5,14 @@ on:
     branches:
       - main
       - "feature/*"
-  # pull_request:
-  #   branches: [main]
-  #   types: [opened, synchronize]
+    # pull_request:
+    #   branches: [main]
+    #   types: [opened, synchronize]
     paths-ignore:
-      -README.md
+      - README.md
 
 jobs:
-  client-tests:
+  client-unit-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 3
 
@@ -37,9 +37,9 @@ jobs:
         run: npm ci
         working-directory: ./client
 
-      # - name: Check style/lint
-      #   run: npm run lint
-      #   working-directory: ./client
+      - name: Check style/lint
+        run: npm run lint
+        working-directory: ./client
 
       - name: Run TypeScript type checks
         run: npm run typecheck
@@ -53,8 +53,7 @@ jobs:
         run: npm run test
         working-directory: ./client
 
-
-  server-tests:
+  server-unit-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 3
 
@@ -74,18 +73,17 @@ jobs:
       - name: Run TypeScript type checks
         run: npm run tsc --noEmit
         working-directory: ./server
-  
+
       # - name: Check style/lint
       #   run: npm run lint
-      #   working-directory: ./server 
+      #   working-directory: ./server
       ##
       ## fix linting conf issues
-  
+
       - name: Run npm audit
         run: npm audit --audit-level=high
-        working-directory: ./server  
+        working-directory: ./server
 
       - name: Run server unit tests
         run: npm run test
         working-directory: ./server
-
