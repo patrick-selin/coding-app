@@ -97,5 +97,3 @@ The development environment consists of the following Docker services:
 ## License
 
 ## Contact
-
-## test
