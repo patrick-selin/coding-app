@@ -11,9 +11,8 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     env:
-      # Backend environment variables
       NODE_ENV: test
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}w
       SERVER_PORT: ${{ secrets.SERVER_PORT }}
       SERVER_HOST: ${{ secrets.SERVER_HOST }}
       VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
