@@ -53,6 +53,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push to Docker Hub
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: ${{ matrix.app == 'client' && './client' || './server' }}
@@ -62,3 +63,6 @@ jobs:
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-cache
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-cache,mode=max
 
+    outputs:
+      client_image_sha: ${{ steps.build.outputs.client_image_sha }}
+      server_image_sha: ${{ steps.build.outputs.server_image_sha }}
