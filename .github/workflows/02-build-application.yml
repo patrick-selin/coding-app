@@ -58,4 +58,7 @@ jobs:
           context: ${{ matrix.app == 'client' && './client' || './server' }}
           file: ${{ matrix.app == 'client' && './client/Dockerfile.prod' || './server/Dockerfile.prod' }}
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-${{ github.sha }}
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-cache
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-cache,mode=max
+
