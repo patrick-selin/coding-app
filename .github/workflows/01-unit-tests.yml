@@ -8,6 +8,7 @@ on:
     # pull_request:
     #   branches: [main]
     #   types: [opened, synchronize]
+    #
     paths-ignore:
       - README.md
 
@@ -34,7 +35,7 @@ jobs:
             ${{ runner.os }}-client-node-
 
       - name: Install frontend dependencies
-        run: npm ci
+        run: npm install
         working-directory: ./client
 
       - name: Check style/lint

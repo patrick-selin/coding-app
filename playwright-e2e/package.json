@@ -2,7 +2,6 @@
   "name": "playwright-e2e",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
     "test:report": " npx playwright show-report"
