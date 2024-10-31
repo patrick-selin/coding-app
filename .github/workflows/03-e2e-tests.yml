@@ -17,31 +17,12 @@ jobs:
       SERVER_PORT: ${{ secrets.SERVER_PORT }}
       SERVER_HOST: ${{ secrets.SERVER_HOST }}
       VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+      CLIENT_IMAGE_SHA: ${{ github.event.workflow_run.outputs.client_image_sha }}
+      SERVER_IMAGE_SHA: ${{ github.event.workflow_run.outputs.server_image_sha }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Download SHA artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: sha-artifacts
-
-      - name: List downloaded artifacts
-        run: ls -la
-
-      - name: Unzip SHA artifacts
-        run: |
-          unzip sha-artifacts.zip
-          ls -la
-
-
-      - name: Read SHA values from artifacts
-        run: |
-          CLIENT_IMAGE_SHA=$(cat client_image_sha.txt)
-          SERVER_IMAGE_SHA=$(cat server_image_sha.txt)
-          echo "CLIENT_IMAGE_SHA=$CLIENT_IMAGE_SHA" >> $GITHUB_ENV
-          echo "SERVER_IMAGE_SHA=$SERVER_IMAGE_SHA" >> $GITHUB_ENV
 
       - name: Verify SHA Outputs in E2E Workflow
         run: |
