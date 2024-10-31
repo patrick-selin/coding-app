@@ -35,6 +35,7 @@ jobs:
           unzip sha-artifacts.zip
           ls -la
 
+
       - name: Read SHA values from artifacts
         run: |
           CLIENT_IMAGE_SHA=$(cat client_image_sha.txt)
