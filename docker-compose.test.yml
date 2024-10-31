@@ -1,18 +1,16 @@
-# docker-compose.test-prod.yml
+# docker-compose.test.yml
 services:
   server:
     container_name: coding-app-server
-
-    env_file:
-      - ./server/.env.production
-    build:
-      context: ./server
-      dockerfile: Dockerfile.prod
+    image: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:server-${{ github.sha }} 
     depends_on:
       - database-sql
     restart: unless-stopped
-    # expose:
-    #   - "3335"
+    environment:
+      NODE_ENV: test
+      DATABASE_URL: ${DATABASE_URL}
+      SERVER_PORT: ${SERVER_PORT}
+      SERVER_HOST: ${SERVER_HOST}
 
   database-sql:
     container_name: coding-app-postgresql-db
@@ -20,18 +18,16 @@ services:
     restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - server/.env.production
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_URL}  
 
   client:
     container_name: coding-app-client
-    build:
-      context: ./client
-      dockerfile: Dockerfile.prod
+    image: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:client-${{ github.sha }}
     depends_on:
       - server
     environment:
-      - client/.env.production
+      VITE_BASE_URL: ${VITE_BASE_URL} 
     expose:
       - "80"
 
@@ -44,7 +40,6 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro 
-  
     depends_on:
       - server
       - client
