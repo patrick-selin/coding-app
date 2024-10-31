@@ -25,8 +25,9 @@ jobs:
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
         with:
+          name: sha-artifacts
           run-id: ${{ github.event.workflow_run.id }}
-      
+          repository: patrick-selin/coding-app
 
       - name: List downloaded artifacts
         run: ls -la
@@ -35,7 +36,6 @@ jobs:
         run: |
           unzip sha-artifacts.zip
           ls -la
-
 
       - name: Read SHA values from artifacts
         run: |
