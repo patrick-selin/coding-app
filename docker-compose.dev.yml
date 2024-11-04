@@ -56,16 +56,16 @@ services:
       - server
       - client
 
-  playwright-e2e:
-    entrypoint: "/bin/true"
-    build:
-      context: ./playwright-e2e
-      dockerfile: dev.Dockerfile
-    network_mode: host
-    # depends_on:
-    #   - ui
-    volumes:
-      - ./playwright-e2e/tests:/usr/src/app/tests
+  # playwright-e2e:
+  #   entrypoint: "/bin/true"
+  #   build:
+  #     context: ./playwright-e2e
+  #     dockerfile: Dockerfile.dev
+  #   network_mode: host
+  #   # depends_on:
+  #   #   - ui
+  #   volumes:
+  #     - ./playwright-e2e/tests:/usr/src/app/tests
 
 volumes:
   postgres_data:
