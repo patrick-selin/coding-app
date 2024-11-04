@@ -53,7 +53,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+      
       - name: Build and push to Docker Hub
         id: build
         uses: docker/build-push-action@v5
@@ -62,37 +62,4 @@ jobs:
           file: ${{ matrix.app == 'client' && './client/Dockerfile.prod' || './server/Dockerfile.prod' }}
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-${{ github.sha }}
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-cache
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-cache,mode=max
-
-      - name: Set output for client image SHA
-        id: set_output_client
-        if: ${{ matrix.app == 'client' }}
-        run: echo "client_image_sha=${{ github.sha }}" >> $GITHUB_ENV
-
-      - name: Set output for server image SHA
-        id: set_output_server
-        if: ${{ matrix.app == 'server' }}
-        run: echo "server_image_sha=${{ github.sha }}" >> $GITHUB_ENV
-
-      - name: Create SHA files
-        run: |
-          echo "${{ env.client_image_sha }}" > client_image_sha.txt
-          echo "${{ env.server_image_sha }}" > server_image_sha.txt
-
-      - name: Upload SHA artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: sha-artifacts
-          path: |
-            client_image_sha.txt
-            server_image_sha.txt
-          if-no-files-found: warn
-          compression-level: 6
-          overwrite: true
-          include-hidden-files: false
-
-      - name: Verify SHA Outputs in Build Workflow
-        run: |
-          echo "Client Image SHA: ${{ env.client_image_sha }}"
-          echo "Server Image SHA: ${{ env.server_image_sha }}"
+  
