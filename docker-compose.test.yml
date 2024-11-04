@@ -2,7 +2,7 @@
 services:
   server:
     container_name: coding-app-server
-    image: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:server-${{ github.sha }} 
+    image: "${DOCKERHUB_USERNAME}/coding-app:client-${GITHUB_SHA}"
     depends_on:
       - database-sql
     restart: unless-stopped
@@ -23,7 +23,7 @@ services:
 
   client:
     container_name: coding-app-client
-    image: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:client-${{ github.sha }}
+    image: "${DOCKERHUB_USERNAME}/coding-app:server-${GITHUB_SHA}"
     depends_on:
       - server
     environment:
