@@ -2,9 +2,10 @@
 services:
   server:
     container_name: coding-app-server
-    image: "${DOCKERHUB_USERNAME}/coding-app:client-${GITHUB_SHA}"
+    image: "${DOCKERHUB_USERNAME}/coding-app:server-${GITHUB_SHA}"
     depends_on:
-      - database-sql
+      database-sql:
+        condition: service_healthy
     restart: unless-stopped
     environment:
       NODE_ENV: test
@@ -19,11 +20,18 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ${DATABASE_URL}  
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 20s
+      timeout: 5s
+      retries: 5    
 
   client:
     container_name: coding-app-client
-    image: "${DOCKERHUB_USERNAME}/coding-app:server-${GITHUB_SHA}"
+    image: "${DOCKERHUB_USERNAME}/coding-app:client-${GITHUB_SHA}"
     depends_on:
       - server
     environment:
