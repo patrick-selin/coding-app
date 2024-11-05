@@ -11,6 +11,7 @@ on:
     #
     paths-ignore:
       - README.md
+      - docs/**
 
 jobs:
   client-unit-tests:
