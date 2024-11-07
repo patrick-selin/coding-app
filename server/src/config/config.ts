@@ -13,6 +13,10 @@ interface Config {
   SERVER_PORT: number;
   SERVER_HOST: string;
   DATABASE_URL: string;
+  POSTGRES_DB: string;
+  POSTGRES_PASSWORD: string;
+  POSTGRES_USER: string;
+  POSTGRES_HOST: string;
 }
 
 const server_port = process.env.SERVER_PORT
@@ -28,4 +32,8 @@ export const config: Config = {
   SERVER_PORT: server_port,
   SERVER_HOST: server_host,
   DATABASE_URL: process.env.DATABASE_URL,
+  POSTGRES_DB: process.env.POSTGRES_DB,
+  POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
+  POSTGRES_USER: process.env.POSTGRES_USER,
+  POSTGRES_HOST: process.env.POSTGRES_HOST,
 };

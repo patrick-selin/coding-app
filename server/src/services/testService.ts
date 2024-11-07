@@ -4,10 +4,14 @@ import { db } from "../db/db";
 import { testItems as testItemsDb } from "../db/schema";
 
 export const getAllTestItems = async () => {
-  // return testItems;
-  // const temp = await db.select().from(testItemsDb);
-  // console.log(`HUU :: ${temp}`);
-  return await db.select().from(testItemsDb);
+  try {
+    const result = await db.select().from(testItemsDb);
+    console.log("Fetched test items:", result);
+    return result;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
 };
 
 export const getTestItemById = (id: string): TestItem | undefined => {
