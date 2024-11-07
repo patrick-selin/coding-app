@@ -8,11 +8,14 @@ import {
 
 export const getTestItems = async (_req: Request, res: Response) => {
   try {
-    const items = await getAllTestItems();
-    console.log(`ITEMS :: ${items}`);
-    res.json(items);
-  } catch (_error) {
-    res.status(500).json({ error: "Error" });
+    const testItems = await getAllTestItems();
+    if (testItems.length === 0) {
+      return res.status(404).json({ message: "No test items found" });
+    }
+    res.status(200).json(testItems);
+  } catch (error) {
+    console.error("Error in getTestItems controller:", error);
+    res.status(500).json({ error: "Error fetching data" });
   }
 };
 

@@ -1,6 +1,4 @@
 # docker-compose.dev.yml
-version: "3.8"
-
 services:
   server:
     container_name: coding-app-server
@@ -23,7 +21,9 @@ services:
   database-sql:
     container_name: coding-app-postgresql-db
     image: postgres:16.4-bullseye
-    restart: unless-stopped
+    restart: always
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -39,10 +39,10 @@ services:
       - /usr/src/app/node_modules
     depends_on:
       - server
-    environment:
+    env_file:
       - client/.env.development
-    expose:
-      - "5173"
+    # expose:
+    #   - "5173"
 
   nginx:
     image: nginx:1.27.1
