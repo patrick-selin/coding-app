@@ -1,0 +1,19 @@
+{
+  "name": "coding-app",
+  "version": "1.0.0",
+  "description": "coding-app-commands",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "docker-compose -f docker-compose.dev.yml up --build ",
+    "test": "npm run test:start && vitest run && npm run test:stop",
+    "test:start": "docker-compose -f docker-compose.test-local.yml up --build",
+    "test:stop": "docker-compose -f docker-compose.test-local.yml down",
+    "start:test": "tsc && env NODE_ENV=test node build/src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

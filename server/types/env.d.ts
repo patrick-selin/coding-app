@@ -5,6 +5,7 @@ declare namespace NodeJS {
     PORT?: string;
 
     DATABASE_URL: string;
+    TEST_DATABASE_URL: string;
     DATABASE_URL_MIGRATE: string;
     POSTGRES_DB: string;
     POSTGRES_PASSWORD: string;
