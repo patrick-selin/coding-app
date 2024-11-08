@@ -12,8 +12,11 @@
     "start:test": "tsc && env NODE_ENV=test node build/src/index.js",
     "start": "tsc && env NODE_ENV=production node build/src/index.js",
     "db:generate": "drizzle-kit generate",
+    "db:generate:test": "env NODE_ENV=test drizzle-kit generate",
+    "db:migrate": "drizzle-kit up",
+    "db:migrate:test": "env NODE_ENV=test drizzle-kit up",
     "db:migrate:script": "tsx src/db/migrate.ts",
-    "db:migrate": "drizzle-kit up"
+    "db:migrate:script:test": "env NODE_ENV=test tsx src/db/migrate.ts"
   },
   "keywords": [],
   "author": "",

@@ -6,16 +6,16 @@ import {
   createTestItem,
 } from "../services/testService";
 
-export const getTestItems = async (_req: Request, res: Response) => {
+export const getTestItems = async (_req: Request, res: Response): Promise<Response> => {
   try {
     const testItems = await getAllTestItems();
     if (testItems.length === 0) {
       return res.status(404).json({ message: "No test items found" });
     }
-    res.status(200).json(testItems);
+    return res.status(200).json(testItems);
   } catch (error) {
     console.error("Error in getTestItems controller:", error);
-    res.status(500).json({ error: "Error fetching data" });
+    return res.status(500).json({ error: "Error fetching data" });
   }
 };
 

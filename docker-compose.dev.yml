@@ -3,7 +3,7 @@ services:
   server:
     container_name: coding-app-server
     environment:
-      - NODE_ENV=development
+      NODE_ENV: development
     build:
       context: ./server
       dockerfile: Dockerfile.dev
@@ -11,10 +11,9 @@ services:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
+      - migrate
       - database-sql
     command: ["npx", "tsx", "watch", "src/index.ts"]
-    expose:
-      - "3333"
     env_file:
       - server/.env.development
 
@@ -22,10 +21,21 @@ services:
     container_name: coding-app-postgresql-db
     image: postgres:16.4-bullseye
     restart: always
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - server/.env.development
+
+  migrate:
+    container_name: coding-app-db-migrate
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    command: npm run db:migrate:script
+    depends_on:
+      - database-sql
+    environment:
+      - NODE_ENV=dev
     env_file:
       - server/.env.development
 
@@ -41,8 +51,6 @@ services:
       - server
     env_file:
       - client/.env.development
-    # expose:
-    #   - "5173"
 
   nginx:
     image: nginx:1.27.1
