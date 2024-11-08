@@ -1,16 +1,9 @@
 # docker-compose.test-localyml
 services:
-  server:
+  server-test:
     container_name: coding-app-server-test
     environment:
       NODE_ENV: test
-      # SERVER_PORT: 3333
-      # SERVER_HOST: 0.0.0.0
-      # POSTGRES_USER: patricktest
-      # POSTGRES_HOST: database-sql-test
-      # POSTGRES_PASSWORD: test_password
-      # POSTGRES_DB: coding-app-db-test
-      # TEST_DATABASE_URL: postgres://patricktest:test_password@database-sql-test:5432/coding-app-db-test
     build:
       context: ./server
       dockerfile: Dockerfile.dev
@@ -32,6 +25,11 @@ services:
     restart: always
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "patricktest"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
     volumes:
       - postgres_test_data:/var/lib/postgresql/data
       - ./server/db/init_data.sql:/docker-entrypoint-initdb.d/init_data.sql
@@ -44,18 +42,19 @@ services:
 
   migrate-test:
     container_name: coding-app-db-test-migrate
+    entrypoint: ["sh", "-c", "sleep 5 && npm run db:migrate:script:test"]
     build:
       context: ./server
       dockerfile: Dockerfile.dev
     command: npm run db:migrate:script:test
     depends_on:
-      - database-sql-test
+      database-sql-test:
+        condition: service_healthy
     environment:
       - NODE_ENV=test
     env_file:
       - server/.env.test
-
-  client:
+  client-test:
     container_name: coding-app-client-test
     build:
       context: ./client
@@ -64,7 +63,7 @@ services:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
-      - server
+      - server-test
     env_file:
       - client/.env.test
 
@@ -77,8 +76,8 @@ services:
     container_name: reverse-proxy-test
     restart: always
     depends_on:
-      - server
-      - client
+      - server-test
+      - client-test
 
   pgadmin:
     container_name: pgadmin-test
