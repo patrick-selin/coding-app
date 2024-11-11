@@ -7,12 +7,17 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "docker-compose -f docker-compose.dev.yml up --build ",
+    "dev": "docker-compose -f docker-compose.dev.yml up --build",
     "test": "npm run test:start",
     "test:vitest:client": "docker-compose -f docker-compose.test-local.yml exec client npm run test",
+    "test:vitest:client:watch": "docker-compose -f docker-compose.test-local.yml exec client npm run test:watch",
     "test:vitest:server": "docker-compose -f docker-compose.test-local.yml exec server npm run test",
+    "test:vitest:server:watch": "docker-compose -f docker-compose.test-local.yml exec server npm run test:watch",
     "test:start": "docker-compose -f docker-compose.test-local.yml up --build",
-    "test:stop": "docker-compose -f docker-compose.test-local.yml down"
+    "test:stop": "docker-compose -f docker-compose.test-local.yml down",
+    "test:e2e": "cd playwright-e2e && npm run test",
+    "test:e2e:report": "cd playwright-e2e && npm run test:report",
+    "test:run": "docker-compose exec client npm run test"
   },
   "keywords": [],
   "author": "",

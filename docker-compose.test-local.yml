@@ -1,97 +1,18 @@
 # docker-compose.test-localyml
 services:
-  server-test:
-    container_name: coding-app-server-test
-    environment:
-      NODE_ENV: test
-    build:
-      context: ./server
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
-    depends_on:
-      - database-sql-test
-      - migrate-test
-    command: ["npx", "tsx", "src/index.ts"]
-    expose:
-      - "3333"
-    env_file:
-      - server/.env.test
-
-  database-sql-test:
-    container_name: coding-app-postgresql-db-test
+  test-database-sql:
+    container_name: coding-app-postgresql-test-db
     image: postgres:16.4-bullseye
     restart: always
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "patricktest"]
-      interval: 30s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - postgres_test_data:/var/lib/postgresql/data
-      - ./server/db/init_data.sql:/docker-entrypoint-initdb.d/init_data.sql
     environment:
       POSTGRES_USER: patricktest
-      POSTGRES_HOST: database-sql-test
       POSTGRES_PASSWORD: test_password
       POSTGRES_DB: coding-app-db-test
-      TEST_DATABASE_URL: postgres://patricktest:test_password@database-sql-test:5432/coding-app-db-test
-
-  migrate-test:
-    container_name: coding-app-db-test-migrate
-    entrypoint: ["sh", "-c", "sleep 5 && npm run db:migrate:script:test"]
-    build:
-      context: ./server
-      dockerfile: Dockerfile.dev
-    command: npm run db:migrate:script:test
-    depends_on:
-      database-sql-test:
-        condition: service_healthy
-    environment:
-      - NODE_ENV=test
-    env_file:
-      - server/.env.test
-  client-test:
-    container_name: coding-app-client-test
-    build:
-      context: ./client
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
-    depends_on:
-      - server-test
-    env_file:
-      - client/.env.test
-
-  nginx:
-    image: nginx:1.27.1
+      POSTGRES_PORT: 5433
     ports:
-      - "8080:80"
+      - "5433:5432"
     volumes:
-      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
-    container_name: reverse-proxy-test
-    restart: always
-    depends_on:
-      - server-test
-      - client-test
-
-  pgadmin:
-    container_name: pgadmin-test
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin_password
-    ports:
-      - "5050:80"
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    depends_on:
-      - database-sql-test
+      - postgres_test_data:/var/lib/postgresql/data
 
 volumes:
   postgres_test_data:
-  pgadmin_data:
