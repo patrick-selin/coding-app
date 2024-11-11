@@ -8,7 +8,6 @@ interface TestItem {
   content: string;
   important: boolean;
 }
-
 function App() {
   const [testData, setTestData] = useState<TestItem[]>([]);
 
