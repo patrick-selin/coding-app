@@ -6,7 +6,10 @@ import {
   createTestItem,
 } from "../services/testService";
 
-export const getTestItems = async (_req: Request, res: Response): Promise<Response> => {
+export const getTestItems = async (
+  _req: Request,
+  res: Response
+): Promise<Response> => {
   try {
     const testItems = await getAllTestItems();
     if (testItems.length === 0) {
@@ -34,12 +37,15 @@ export const getTestItem = (req: Request, res: Response): void => {
   }
 };
 
-export const addTestItem = (req: Request, res: Response): void => {
+export const addTestItem = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { content, important } = req.body;
-    // check if req.body ok, else erroria
-    const newItem = createTestItem(content, important);
+    console.log(`REQ BODY :: ${JSON.stringify(req.body)}`);
+    const newItem = await createTestItem(content, important);
+
     res.status(201).json(newItem);
   } catch (_error) {
     res.status(500).json({ error: "Failed to create a test item" });

@@ -1,7 +1,8 @@
 // testServices.js
-import { addTestItem, TestItem, testItems } from "../models/testItemModel";
+import { TestItem, testItems } from "../models/testItemModel";
 import { db } from "../db/db";
 import { testItems as testItemsDb } from "../db/schema";
+import { v4 as uuidv4 } from "uuid";
 
 export const getAllTestItems = async () => {
   try {
@@ -18,20 +19,18 @@ export const getTestItemById = (id: string): TestItem | undefined => {
   return testItems.find((item) => item.id === id);
 };
 
-export const createTestItem = (
-  content: string,
-  important: boolean
-): TestItem => {
-  const lastItem = testItems[testItems.length - 1];
-  const newId = lastItem ? (Number(lastItem.id) + 1).toString() : "1";
+export const createTestItem = async (content: string, important: boolean) => {
+  try {
+    const id = uuidv4();
+    const [newItem] = await db
+      .insert(testItemsDb)
+      .values({ id, content, important })
+      .returning();
 
-  const newItem: TestItem = {
-    id: newId,
-    content,
-    important,
-  };
-
-  addTestItem(newItem);
-
-  return newItem;
+    console.log("Created test item:", newItem);
+    return newItem;
+  } catch (error) {
+    console.error("Error creating test item:", error);
+    throw error;
+  }
 };
