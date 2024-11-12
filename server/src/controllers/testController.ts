@@ -1,13 +1,14 @@
 // testController.js
 import { Request, Response } from "express";
 import { getAllTestItems, createTestItem } from "../services/testService";
+import { db } from "../db/db";
 
 export const getTestItems = async (
   _req: Request,
   res: Response
 ): Promise<Response> => {
   try {
-    const testItems = await getAllTestItems();
+    const testItems = await getAllTestItems(db);
     if (testItems.length === 0) {
       return res.status(404).json({ message: "No test items found" });
     }
@@ -26,7 +27,7 @@ export const addTestItem = async (
     console.log(process.env.NODE_ENV);
     const { content, important } = req.body;
     console.log(`REQ BODY :: ${JSON.stringify(req.body)}`);
-    const newItem = await createTestItem(content, important);
+    const newItem = await createTestItem(db, content, important);
 
     res.status(201).json(newItem);
   } catch (_error) {
