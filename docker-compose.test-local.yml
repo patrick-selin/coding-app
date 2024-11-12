@@ -8,7 +8,6 @@ services:
       POSTGRES_USER: patricktest
       POSTGRES_PASSWORD: test_password
       POSTGRES_DB: coding-app-db-test
-      POSTGRES_PORT: 5433
     ports:
       - "5433:5432"
     volumes:

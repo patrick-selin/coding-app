@@ -1,5 +1,4 @@
 // testServices.js
-import { TestItem, testItems } from "../models/testItemModel";
 import { db } from "../db/db";
 import { testItems as testItemsDb } from "../db/schema";
 import { v4 as uuidv4 } from "uuid";
@@ -13,10 +12,6 @@ export const getAllTestItems = async () => {
     console.error("Error fetching data:", error);
     throw error;
   }
-};
-
-export const getTestItemById = (id: string): TestItem | undefined => {
-  return testItems.find((item) => item.id === id);
 };
 
 export const createTestItem = async (content: string, important: boolean) => {
