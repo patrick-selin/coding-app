@@ -1,10 +1,6 @@
 // testController.js
 import { Request, Response } from "express";
-import {
-  getAllTestItems,
-  getTestItemById,
-  createTestItem,
-} from "../services/testService";
+import { getAllTestItems, createTestItem } from "../services/testService";
 
 export const getTestItems = async (
   _req: Request,
@@ -22,26 +18,12 @@ export const getTestItems = async (
   }
 };
 
-export const getTestItem = (req: Request, res: Response): void => {
-  try {
-    const id = req.params.id;
-    const item = getTestItemById(id);
-
-    if (item) {
-      res.json(item);
-    } else {
-      res.status(404).json({ error: `Test item with id ${id} not found` });
-    }
-  } catch (_error) {
-    res.status(500).json({ error: "Failed to fetch the test item" });
-  }
-};
-
 export const addTestItem = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
+    console.log(process.env.NODE_ENV);
     const { content, important } = req.body;
     console.log(`REQ BODY :: ${JSON.stringify(req.body)}`);
     const newItem = await createTestItem(content, important);
