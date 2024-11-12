@@ -9,6 +9,8 @@
     "dev": "env NODE_ENV=development tsx watch src/index.js",
     "lint": "eslint .",
     "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:integration": "vitest run",
     "test:watch": "vitest",
     "start:test": "tsc && env NODE_ENV=test node build/src/index.js",
     "start:test:watch": "NODE_ENV=test npx tsx watch src/index.ts",
