@@ -8,14 +8,11 @@
   },
   "scripts": {
     "dev": "docker-compose -f docker-compose.dev.yml up --build",
-    "test": "docker-compose -f docker-compose.test-local.yml up --build && docker-compose -f docker-compose.dev.yml exec server npm run test",
-    "test:stop": "docker-compose -f docker-compose.test-local.yml down",
-    "test:unit": "docker-compose -f docker-compose.test-local.yml exec server npm run test:unit",
+    "dev:stop": "docker-compose -f docker-compose.dev.yml down",
+    "test:unit:client": "docker-compose -f docker-compose.dev.yml exec client npm run test:unit",
+    "test:unit:server": "docker-compose -f docker-compose.dev.yml exec server npm run test:unit",
+
     "test:integration": "docker-compose -f docker-compose.test-local.yml exec server npm run test:integration",
-    "test:vitest:client": "docker-compose -f docker-compose.test-local.yml exec client npm run test",
-    "test:vitest:client:watch": "docker-compose -f docker-compose.test-local.yml exec client npm run test:watch",
-    "test:vitest:server": "docker-compose -f docker-compose.test-local.yml exec server npm run test",
-    "test:vitest:server:watch": "docker-compose -f docker-compose.test-local.yml exec server npm run test:watch",
     "test:e2e": "cd playwright-e2e && npm run test",
     "test:e2e:report": "cd playwright-e2e && npm run test:report",
     "test:run": "docker-compose exec client npm run test"

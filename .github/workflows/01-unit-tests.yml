@@ -52,14 +52,15 @@ jobs:
         working-directory: ./client
 
       - name: Run frontend unit tests
-        run: npm run test
+        run: npm run test:unit:ci
         working-directory: ./client
 
-      # - name: Archive test results
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: test results
-      #     path: .last-run.json
+      - name: Upload coverage results
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-coverage
+          path: client/coverage
 
   server-unit-tests:
     runs-on: ubuntu-latest
@@ -101,5 +102,12 @@ jobs:
         working-directory: ./server
 
       - name: Run server unit tests
-        run: npm run test
+        run: npm run test:unit:ci
         working-directory: ./server
+
+      - name: Upload server coverage results
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-coverage
+          path: server/coverage
