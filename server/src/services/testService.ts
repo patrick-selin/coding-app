@@ -1,9 +1,10 @@
 // testServices.js
 
 import { testItems as testItemsDb } from "../db/schema";
+import { DbClient } from "../../types/db"; //
 import { v4 as uuidv4 } from "uuid";
 
-export const getAllTestItems = async (db) => {
+export const getAllTestItems = async (db: DbClient) => {
   try {
     const result = await db.select().from(testItemsDb);
     console.log("Fetched test items:", result);
@@ -14,7 +15,11 @@ export const getAllTestItems = async (db) => {
   }
 };
 
-export const createTestItem = async (db, content: string, important: boolean) => {
+export const createTestItem = async (
+  db: DbClient,
+  content: string,
+  important: boolean
+) => {
   try {
     const id = uuidv4();
     const [newItem] = await db
