@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1731308393812" clover="3.2.0">
-  <project timestamp="1731308393812" name="All files">
-    <metrics statements="68" coveredstatements="18" conditionals="7" coveredconditionals="4" methods="6" coveredmethods="3" elements="81" coveredelements="25" complexity="0" loc="68" ncloc="68" packages="4" files="5" classes="5"/>
-    <package name="src">
+<coverage generated="1731495888317" clover="3.2.0">
+  <project timestamp="1731495888317" name="All files">
+    <metrics statements="76" coveredstatements="18" conditionals="8" coveredconditionals="4" methods="7" coveredmethods="3" elements="91" coveredelements="25" complexity="0" loc="76" ncloc="76" packages="5" files="6" classes="6"/>
+    <package name="client">
+      <metrics statements="8" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <file name="vitest.unit.config.ts" path="/Users/pat_devs/code/coding-app/client/vitest.unit.config.ts">
+        <metrics statements="8" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="client.src">
       <metrics statements="39" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>
       <file name="App.tsx" path="/Users/pat_devs/code/coding-app/client/src/App.tsx">
         <metrics statements="30" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -10,14 +24,15 @@
         <line num="2" count="0" type="stmt"/>
         <line num="3" count="0" type="stmt"/>
         <line num="4" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
         <line num="15" count="0" type="stmt"/>
         <line num="16" count="0" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
         <line num="22" count="0" type="stmt"/>
         <line num="23" count="0" type="stmt"/>
         <line num="24" count="0" type="stmt"/>
@@ -33,9 +48,8 @@
         <line num="34" count="0" type="stmt"/>
         <line num="35" count="0" type="stmt"/>
         <line num="36" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
       </file>
       <file name="main.tsx" path="/Users/pat_devs/code/coding-app/client/src/main.tsx">
         <metrics statements="9" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -50,7 +64,7 @@
         <line num="10" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="src.services">
+    <package name="client.src.services">
       <metrics statements="11" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="test-service.ts" path="/Users/pat_devs/code/coding-app/client/src/services/test-service.ts">
         <metrics statements="11" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -67,7 +81,7 @@
         <line num="14" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="src.utils">
+    <package name="client.src.utils">
       <metrics statements="18" coveredstatements="18" conditionals="3" coveredconditionals="3" methods="2" coveredmethods="2"/>
       <file name="test-component.tsx" path="/Users/pat_devs/code/coding-app/client/src/utils/test-component.tsx">
         <metrics statements="18" coveredstatements="18" conditionals="3" coveredconditionals="3" methods="2" coveredmethods="2"/>
@@ -91,7 +105,7 @@
         <line num="23" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="src.utils.constants">
+    <package name="client.src.utils.constants">
       <metrics statements="0" coveredstatements="0" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
       <file name="index.ts" path="/Users/pat_devs/code/coding-app/client/src/utils/constants/index.ts">
         <metrics statements="0" coveredstatements="0" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
