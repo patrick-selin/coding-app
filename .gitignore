@@ -6,6 +6,9 @@ requests
 build/
 dist/
 
+client/coverage/
+server/coverage/
+
 *.env*
 !.env.example
 .env
