@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         app: [client, server]
-        platform: [linux/amd64, linux/arm64]
+        platform: [linux/amd64, linux/arm64/v8]
     outputs:
       client_image_sha: ${{ steps.set_output_client.outputs.client_image_sha || '' }}
       server_image_sha: ${{ steps.set_output_server.outputs.server_image_sha || '' }}
@@ -62,5 +62,5 @@ jobs:
           context: ${{ matrix.app == 'client' && './client' || './server' }}
           file: ${{ matrix.app == 'client' && './client/Dockerfile.prod' || './server/Dockerfile.prod' }}
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64/v8
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-${{ github.sha }}
