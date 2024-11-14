@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN yarn install && npm cache clean --force
+RUN npm ci
 
 COPY . .
 
@@ -19,7 +19,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm ci
+RUN yarn ci
 
 COPY . .
 RUN npm run build
@@ -32,14 +32,10 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/build ./build
+COPY --from=builder /usr/src/app/vitest.integration.config.ts ./
 
 RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
 RUN chown -R nodejs:nodejs /usr/src/app
 USER nodejs
-
-# EXPOSE 3335
-
-# ENV NODE_ENV=production
-# ENV PORT=3335
 
 CMD ["node", "build/src/index.js"]

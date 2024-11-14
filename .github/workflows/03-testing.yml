@@ -1,4 +1,4 @@
-name: E2E Tests
+name: Integration & E2E Tests
 
 on:
   workflow_run:
@@ -7,25 +7,37 @@ on:
       - completed
 
 jobs:
-  setup-docker:
+  integration-tests:
     runs-on: ubuntu-latest
 
     env:
       NODE_ENV: test
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}  # vaihda tama
+      TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
       POSTGRES_DB: coding-app-db
       SERVER_PORT: 3333
       SERVER_HOST: 0.0.0.0
       VITE_BASE_URL: /api1
+      SERVER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:server-${{ github.sha }}
+      CLIENT_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:client-${{ github.sha }}
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: coding-app-db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Verify Docker Image Tags
-        run: |
-          echo "Expected client Docker image tag: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:client-${{ github.sha }}"
-          echo "Expected server Docker image tag: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:server-${{ github.sha }}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -37,29 +49,54 @@ jobs:
 
       - name: Pull Docker Images
         run: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:client-${{ github.sha }}
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:server-${{ github.sha }}
-          echo "Pulled client image: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:client-${{ github.sha }}"
-          echo "Pulled server image: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:server-${{ github.sha }}"
-        #toimii tahan asti
+          docker pull ${{ env.CLIENT_IMAGE }}
+          docker pull ${{ env.SERVER_IMAGE }}
+
       - name: Start Application with Docker Compose
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          GITHUB_SHA: ${{ github.sha }}
         run: |
-          docker-compose -f docker-compose.test.yml up -d
+          docker-compose -f docker-compose.test-ci.yml up -d
           echo "Waiting for services to be ready..."
-          until curl -s http://localhost:80; do sleep 10; done
+          until curl -s http://localhost:80; do sleep 0; done
 
+      #   - name: Install frontend dependencies
+      #     run: npm install
+      #     working-directory: ./client
 
+      #   - name: Run Integration Tests
+      #     run: npm run test:integration:ci
+      #     working-directory: ./server
+      - name: Debug List all files in container
+        run: |
+            docker-compose -f docker-compose.test-ci.yml exec server ls -R /usr/src/app
+        continue-on-error: true    
+
+      - name: Debug Check for vitest.integration.config.ts
+        run: |
+            docker-compose -f docker-compose.test-ci.yml exec server ls -l /usr/src/app
+        continue-on-error: true    
+
+      - name: Run Integration Tests
+        run: |
+            docker-compose -f docker-compose.test-ci.yml exec server npm run test:integration:ci
+
+            
+            - name: Run Integration Tests Inside Docker Container
+                run: |
+                docker-compose -f docker-compose.test-ci.yml exec server npm run test:integration:ci
+
+      - name: Upload Integration Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results
+          path: ./integration-tests/results
 #   e2e-tests:
 #     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 #     runs-on: ubuntu-latest
 
 #     env:
 #       NODE_ENV: test
-#       DATABASE_URL: ${{ secrets.DATABASE_URL }}  
-#       POSTGRES_USER: ${{ secrets.POSTGRES_USER }} 
+#       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+#       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
 #       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 #       POSTGRES_DB: coding-app-db
 #       SERVER_PORT: 3335

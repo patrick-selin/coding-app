@@ -2,18 +2,15 @@
 services:
   server:
     container_name: coding-app-server
-    image: patske3000/coding-app:server-ae6a272b2212f824d7c0b67c23cac3c28f88d569
-    platform: linux/arm64
+    image: ${SERVER_IMAGE}
     depends_on:
       - database-sql
     restart: unless-stopped
-    env_file:
-      - server/.env.development
-    # environment:
-    #   NODE_ENV: production
-    #   DATABASE_URL: ${DATABASE_URL}
-    #   SERVER_PORT: ${SERVER_PORT}
-    #   SERVER_HOST: ${SERVER_HOST}
+    environment:
+      NODE_ENV: test
+      TEST_DATABASE_URL: ${TEST_DATABASE_URL}
+      SERVER_PORT: 3333
+      SERVER_HOST: 0.0.0.0
 
   database-sql:
     container_name: coding-app-postgresql-db
@@ -21,14 +18,10 @@ services:
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - server/.env.development  
 
   client:
     container_name: coding-app-client
-    image: patske3000/coding-app:client-ae6a272b2212f824d7c0b67c23cac3c28f88d569
-
-    platform: linux/arm64
+    image: ${CLIENT_IMAGE}
     depends_on:
       - server
     environment:
