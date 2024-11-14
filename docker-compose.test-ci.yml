@@ -2,7 +2,8 @@
 services:
   server:
     container_name: coding-app-server
-    image: patske3000/coding-app:server-0f6dacd904f8c37d92cf545539ef516b7ff51e4f
+    image: patske3000/coding-app:server-ae6a272b2212f824d7c0b67c23cac3c28f88d569
+    platform: linux/arm64
     depends_on:
       - database-sql
     restart: unless-stopped
@@ -25,7 +26,9 @@ services:
 
   client:
     container_name: coding-app-client
-    image: patske3000/coding-app:client-0f6dacd904f8c37d92cf545539ef516b7ff51e4f
+    image: patske3000/coding-app:client-ae6a272b2212f824d7c0b67c23cac3c28f88d569
+
+    platform: linux/arm64
     depends_on:
       - server
     environment:
