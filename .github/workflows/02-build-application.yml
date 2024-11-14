@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         app: [client, server]
+        platform: [linux/amd64, linux/arm64]
     outputs:
       client_image_sha: ${{ steps.set_output_client.outputs.client_image_sha || '' }}
       server_image_sha: ${{ steps.set_output_server.outputs.server_image_sha || '' }}
@@ -53,7 +54,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      
+
       - name: Build and push to Docker Hub
         id: build
         uses: docker/build-push-action@v5
@@ -61,5 +62,5 @@ jobs:
           context: ${{ matrix.app == 'client' && './client' || './server' }}
           file: ${{ matrix.app == 'client' && './client/Dockerfile.prod' || './server/Dockerfile.prod' }}
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-${{ github.sha }}
-  

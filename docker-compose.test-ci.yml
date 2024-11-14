@@ -1,35 +1,35 @@
-# docker-compose.prod.yml
+# docker-compose.test-ci.yml
 services:
   server:
     container_name: coding-app-server
-    build:
-      context: ./server
-      dockerfile: Dockerfile.prod
+    image: patske3000/coding-app:server-0f6dacd904f8c37d92cf545539ef516b7ff51e4f
     depends_on:
       - database-sql
     restart: unless-stopped
-    environment:
-      NODE_ENV: production
-      DATABASE_URL: ${DATABASE_URL}
-      SERVER_PORT: ${SERVER_PORT}
-      SERVER_HOST: ${SERVER_HOST}
+    env_file:
+      - server/.env.development
+    # environment:
+    #   NODE_ENV: production
+    #   DATABASE_URL: ${DATABASE_URL}
+    #   SERVER_PORT: ${SERVER_PORT}
+    #   SERVER_HOST: ${SERVER_HOST}
 
   database-sql:
     container_name: coding-app-postgresql-db
     image: postgres:16.4-bullseye
-    restart: unless-stopped
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - server/.env.development  
 
   client:
     container_name: coding-app-client
-    build:
-      context: ./client
-      dockerfile: Dockerfile.prod
+    image: patske3000/coding-app:client-0f6dacd904f8c37d92cf545539ef516b7ff51e4f
     depends_on:
       - server
     environment:
-      VITE_BASE_URL: ${VITE_BASE_URL}
+      VITE_BASE_URL: /api1
     expose:
       - "80"
 
