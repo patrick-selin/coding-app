@@ -1,0 +1,36 @@
+name: Deploy to Staging
+
+on:
+  workflow_run:
+    workflows: ["Integration & E2E Tests"]
+    types:
+      - completed
+
+jobs:
+  deploy-staging:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.7
+
+      - name: Initialize Terraform
+        run: terraform init
+        working-directory: ./terraform
+
+      - name: Validate Terraform
+        run: terraform validate
+        working-directory: ./terraform
+
+      - name: Plan Terraform Changes
+        run: terraform plan 
+        working-directory: ./terraform
+
+      - name: Apply Terraform
+        run: echo "Apply..!"
