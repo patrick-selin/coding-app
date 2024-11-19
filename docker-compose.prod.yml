@@ -2,17 +2,17 @@
 services:
   server:
     container_name: coding-app-server
-    build:
-      context: ./server
-      dockerfile: Dockerfile.prod
+    image: patske3000/coding-app:server-529b4f2c7d2560faa8727dbb8fdb2deab25fb288
     depends_on:
       - database-sql
     restart: unless-stopped
+    env_file:
+      - server/.env.development
     environment:
       NODE_ENV: production
-      DATABASE_URL: ${DATABASE_URL}
-      SERVER_PORT: ${SERVER_PORT}
-      SERVER_HOST: ${SERVER_HOST}
+      DATABASE_URL: postgres://patrick:jlafei8910fQQ-Hw92.W1l@database-sql:5432/coding-app-db
+      SERVER_PORT: 3333
+      SERVER_HOST: 0.0.0.0
 
   database-sql:
     container_name: coding-app-postgresql-db
@@ -23,13 +23,11 @@ services:
 
   client:
     container_name: coding-app-client
-    build:
-      context: ./client
-      dockerfile: Dockerfile.prod
+    image: patske3000/coding-app:client-529b4f2c7d2560faa8727dbb8fdb2deab25fb288
     depends_on:
       - server
     environment:
-      VITE_BASE_URL: ${VITE_BASE_URL}
+      VITE_BASE_URL: /api1
     expose:
       - "80"
 
@@ -42,7 +40,6 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
-
     depends_on:
       - server
       - client

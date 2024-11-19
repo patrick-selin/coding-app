@@ -12,18 +12,6 @@ COPY . .
 
 RUN npm run build
 
-# Stage 2: Production Image
-FROM node:20.11.1-alpine
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN yarn ci
-
-COPY . .
-RUN npm run build
-
 # create prod image
 FROM node:20.11.1-alpine
 
