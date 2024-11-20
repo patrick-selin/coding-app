@@ -11,6 +11,7 @@ server/coverage/
 
 *.env*
 !.env.example
+!.env.development.EXAMPLE
 .env
 
 /logs

@@ -18,6 +18,6 @@ resource "aws_instance" "coding_app_server" {
   instance_type = "t3.micro"
 
   tags = {
-    Name = "hello"
+    Name = "hello-coding-app-staging"
   }
 }
