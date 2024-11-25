@@ -12,23 +12,24 @@ This is a full-stack TypeScript application that allows users to solve coding ch
 
 For detailed documentation on various aspects of the project, please refer to the following files:
 
-- **[API.md](docs/API.md)**: API Overview, endpoint documentation, OpenAPI specification, authentication details, error handeling and routing.
-- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)**: High-level overview of the app architecture and service descriptions.
-- **[CHANGELOG.md](docs/CHANGELOG.md)**: A log of project updates, features, and bug fixes.
-- **[CI/CD.md](docs/CI/CD.md)**: Overview of the CI/CD pipeline, GitHub Actions workflows.
-- **[DATA_MODELING.md](docs/DATA_MODELING.md)**: Database schema, Drizzle ORM usage, migrations, and seeding data.
-- **[DEPLOYMENT.md](docs/DEPLOYMENT.md)**: Detailed deployment steps, Terraform setup and environment configurations.
-- **[SETUP.md](docs/SETUP.md)**: Instructions for setting up the development environment locally with Docker and run tests. For detailed setup instructions and how to run the tests, refer to the **Testing Setup** section in this file.
-- **[TESTING.md](docs/TESTING.md)**: Testing strategy, running unit, integration and E2E tests.
+- **API.md**: API Overview, endpoint documentation, OpenAPI specification, authentication details, error handeling and routing.
+- **ARCHITECTURE.md**: High-level overview of the app architecture and service descriptions.
+- **CHANGELOG.md**: A log of project updates, features, and bug fixes.
+- **CI/CD.md**: Overview of the CI/CD pipeline, GitHub Actions workflows.
+- **DATA_MODELING.md**: Database schema, Drizzle ORM usage, migrations, and seeding data.
+- **DEPLOYMENT.md**: Detailed deployment steps, Terraform setup and environment configurations.
+- **[SETUP.md](docs/SETUP.md)**: Instructions for setting up the development environment locally with Docker, how to run tests and other commands.
+- **[TESTING.md](docs/TESTING.md)**: Testing strategy.
 - **[TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)**: Common issues and debugging tips.
 
 ## Features
 
 - **Dockerized development and production environment** for frontend and backend.
 - **CI/CD pipeline** using GitHub Actions to automate testing, build, and deployment.
-- **AWS deployment** using Terraform. - Multi-environment setups (dev, staging, prod).
-- **Unit and integration tests** with Vitest for both frontend and backend.
-- **End-to-end tests** using Playwright to simulate real user interactions.
+- **AWS deployment** using Terraform.
+- Multi-environment setups (dev, staging, prod).
+- **Unit and integration tests** for both frontend and backend.
+- **End-to-end tests** to simulate real user interactions.
 
 ## Technologies
 
@@ -64,7 +65,8 @@ For detailed documentation on various aspects of the project, please refer to th
   POSTGRES_USER=postgres
   POSTGRES_PASSWORD=yourpassword
   POSTGRES_DB=postgres
-  DATABASE_URL=postgres://postgres:yourpassword@postgres:5432/postgres
+  POSTGRES_HOST=database-sql # docker-compose service
+  DATABASE_URL=postgres://postgres:yourpassword@pdatabase-sql:5432/postgres
   ```
 
 - For the **/client** folder, the following environment variables are required:
@@ -76,7 +78,7 @@ For detailed documentation on various aspects of the project, please refer to th
 4. Build and start the app using NPM script that launches Docker Compose: `npm run dev`
 5. Access the app at: [http://localhost:80](http://localhost:80)
 
-For detailed setup instructions and information on running the tests, refer to the SETUP.md.
+For detailed setup instructions and information on running the tests, refer to the **[SETUP.md](docs/SETUP.md)**.
 
 ## Project Structure
 
@@ -90,7 +92,3 @@ The project consists of the following directories:
 - **/nginx**: Reverse proxy configuration.
 - **/playwright-e2e**: End-to-end tests using Playwright.
 - **/docker-compose.dev.yml**: Docker Compose configuration for local development.
-
-## Deployment
-
-The app is deployed to AWS using Terraform. For more details, check out the [Deployment Guide](docs/DEPLOYMENT.md).
