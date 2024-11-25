@@ -106,3 +106,26 @@ The project uses **Vitest** for unit and integration testing, and **Playwright**
       ```bash
       npm run test:e2e
 
+
+## Other Available Commands
+
+### TypeScript Compilation
+- **`tsc`**: Compiles the TypeScript files for the backend. **Note**: You need to run this command from the `/server` directory. The frontend uses **Vite**, which automatically compiles the TypeScript files when you run the development server.
+
+### ESLint (Linting)
+- **`lint`**: Runs ESLint to check for code quality and stylistic errors across both frontend and backend code.
+  - **For backend linting**, run the command from the `/server` directory.
+  - **For frontend linting**, run the command from the `/client` directory.
+
+### Database Migrations
+The backend uses **Drizzle ORM** for handling database migrations and schema generation. The following commands are available for database-related tasks, run these commands from the `/server` directory.:
+
+- **`db:migrate`**: Run database migrations for the production environment.
+- **`db:migrate:test`**: Run migrations for the test environment.
+- **`db:generate`**: Generate the database schema.
+- **`db:generate:test`**: Generate the schema for the test environment.
+
+### Preview and Build (Client)
+For building the client side production version:
+
+- **`build`**: Build the production version of the client app. Run this command from the `/client` directory.
