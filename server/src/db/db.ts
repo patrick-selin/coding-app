@@ -8,6 +8,7 @@ import { DbClient } from "../../types/db";
 
 const databaseUrl =
   config.NODE_ENV === "test" ? config.TEST_DATABASE_URL : config.DATABASE_URL;
+  
 console.log(`db url :: ${databaseUrl}`);
 const queryClient = postgres(databaseUrl);
 console.log(`Connecting to database: ${config.POSTGRES_DB}`);
