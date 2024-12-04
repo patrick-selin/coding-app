@@ -1,5 +1,4 @@
 // pages/Home.tsx
-
 function Home() {
   return (
     <div>
