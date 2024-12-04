@@ -17,8 +17,12 @@ import ChallengeWorkspace from "./pages/ChallengeWorkspace"; // Import Challenge
 const router = createBrowserRouter([
   {
     path: "/", // Root path
-    element: <Layout />, // Layout component wraps all children routes
+    element: <Layout children={undefined} />, // Layout component wraps all children routes
     children: [
+      {
+        path: "/", // Redirect from root to /home
+        element: <Home />, // Redirect to /home
+      },
       {
         path: "home", // Relative path for "home" route
         element: <Home />,
