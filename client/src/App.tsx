@@ -2,7 +2,6 @@ import "./App.css";
 import TestComponent from "./utils/test-component";
 import testService from "./services/test-service";
 import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router";
 
 interface TestItem {
   id: number;
