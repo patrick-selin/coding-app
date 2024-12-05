@@ -1,42 +1,46 @@
 // main.tsx
 import { StrictMode } from "react";
-import "./index.css";
-import "@mantine/core/styles.css"; // Mantine CSS styles
+import "@mantine/core/styles.css";
+import "./styles/global.css";
 //
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom"; // React Router v6+ API
-import { MantineProvider } from "@mantine/core";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { MantineProvider, createTheme } from "@mantine/core";
 //
-import Layout from "./components/Layout"; // Import Layout component
-import Home from "./pages/Home"; // Import Home page component
-import Dashboard from "./pages/Dashboard"; // Import Dashboard page component
-import Challenges from "./pages/Challenges"; // Import Challenges page component
-import ChallengeWorkspace from "./pages/ChallengeWorkspace"; // Import ChallengeWorkspace
+import Layout from "./components/Layout";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+import Challenges from "./pages/Challenges";
+import ChallengeWorkspace from "./pages/ChallengeWorkspace/ChallengeWorkspace";
 
-// Define your routes
+const theme = createTheme({
+  fontFamily: "Open Sans, sans-serif",
+  primaryColor: "cyan",
+});
+
 const router = createBrowserRouter([
   {
-    path: "/", // Root path
-    element: <Layout children={undefined} />, // Layout component wraps all children routes
+    path: "/",
+    element: <Layout children={undefined} />,
     children: [
       {
-        path: "/", // Redirect from root to /home
-        element: <Home />, // Redirect to /home
-      },
-      {
-        path: "home", // Relative path for "home" route
+        path: "/",
         element: <Home />,
       },
       {
-        path: "dashboard", // Relative path for "dashboard" route
+        path: "home",
+        element: <Home />,
+      },
+      {
+        path: "dashboard",
         element: <Dashboard />,
       },
       {
-        path: "challenges", // Relative path for "challenges" route
+        path: "challenges",
         element: <Challenges />,
       },
       {
-        path: "challenges/:id", // Dynamic route for challenge workspace
+        path: "challenges/:id",
         element: <ChallengeWorkspace />,
       },
     ],
@@ -45,9 +49,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <MantineProvider theme={{}}>
+    <MantineProvider theme={theme}>
       <RouterProvider router={router} />{" "}
-      {/* Pass the router to RouterProvider */}
     </MantineProvider>
   </StrictMode>
 );
