@@ -1,8 +1,9 @@
 // components/Footer.tsx
+import { Title } from "@mantine/core";
 const Footer = () => {
   return (
-    <footer style={{ backgroundColor: "#808080", padding: "1rem 0" }}>
-      <p>i am a footer</p>
+    <footer>
+      <Title order={5}>i am a footer</Title>
     </footer>
   );
 };

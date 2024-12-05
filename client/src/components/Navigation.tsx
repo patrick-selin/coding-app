@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useMantineColorScheme, Button, Group } from "@mantine/core";
 
 const Navigation = () => {
+  const { setColorScheme } = useMantineColorScheme();
   return (
     <div>
       <nav>
@@ -17,6 +19,13 @@ const Navigation = () => {
         </ul>
       </nav>
 
+      <div>
+        <Group>
+          <Button onClick={() => setColorScheme("light")}>Light</Button>
+          <Button onClick={() => setColorScheme("dark")}>Dark</Button>
+          <Button onClick={() => setColorScheme("auto")}>Auto</Button>
+        </Group>
+      </div>
       <hr />
     </div>
   );

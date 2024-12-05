@@ -1,8 +1,9 @@
 // pages/Home.tsx
+import { Title } from "@mantine/core";
 function Home() {
   return (
     <div>
-      <h1>Vite + React with T - home</h1>
+      <Title order={1}>Vite + React with T - home</Title>
     </div>
   );
 }
