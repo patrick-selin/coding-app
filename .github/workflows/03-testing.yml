@@ -56,7 +56,11 @@ jobs:
         run: |
           docker-compose -f docker-compose.test-ci.yml up -d
           echo "Waiting for services to be ready..."
-          until curl -s http://localhost:80; do sleep 0; done
+          until curl -s http://localhost:80/health; do
+            echo "Waiting for backend to be ready..."
+            sleep 5
+          done
+          echo "Services are ready!"
 
       - name: Debug List all files in container
         run: |
@@ -73,11 +77,12 @@ jobs:
           docker-compose -f docker-compose.test-ci.yml exec server npm run test:integration:ci
         continue-on-error: true
 
-    #   - name: Upload Integration Test Results
-    #     uses: actions/upload-artifact@v4
-    #     with:
-    #       name: integration-test-results
-    #       path: ./integration-tests/results
+      - name: Upload Integration Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results
+          path: ./integration-tests/results
+          
 #   e2e-tests:
 #     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 #     runs-on: ubuntu-latest

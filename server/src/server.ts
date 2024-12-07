@@ -17,9 +17,8 @@ app.get("/", (_req, res) => {
   res.send("Hello app");
 });
 
-app.get("/ping", (_req, res) => {
-  console.log("teeeesting ping...");
-  res.send("poong");
+app.get("/health", (_req, res) => {
+  res.json({ status: "OK" });
 });
 
 app.use("/api1", testRoutes);
