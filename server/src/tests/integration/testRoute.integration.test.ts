@@ -12,19 +12,19 @@ describe("POST /api1/test", () => {
   it("should create a new test item in the test database", async () => {
     const response = await request(app)
       .post("/api1/test")
-      .send({ content: "Test item content 3", important: true })
+      .send({ content: "Test item content 44", important: true })
       .set("Content-Type", "application/json");
 
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("id");
-    expect(response.body.content).toBe("Test item content 3");
+    expect(response.body.content).toBe("Test item content 44");
     expect(response.body.important).toBe(true);
 
     const items = await db.select().from(testItemsDb);
     expect(items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          content: "Test item content 3",
+          content: "Test item content 44",
           important: true,
         }),
       ])

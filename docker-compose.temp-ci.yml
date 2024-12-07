@@ -1,14 +1,17 @@
-# docker-compose.test-ci.yml
+# docker-compose.test-ci.yml temp temp temp
 services:
   server:
     container_name: coding-app-server
-    image: ${SERVER_IMAGE}
+    build:
+      context: ./server
+      dockerfile: Dockerfile.prod
     depends_on:
       - database-sql
     restart: unless-stopped
     environment:
       NODE_ENV: test
-      TEST_DATABASE_URL: ${TEST_DATABASE_URL}
+      DATABASE_URL: postgres://patrick:jlafei8910fQQ-Hw92.W1l@database-sql:5432/coding-app-db
+      TEST_DATABASE_URL: postgres://patrick:jlafei8910fQQ-Hw92.W1l@database-sql:5432/coding-app-db-test
       SERVER_PORT: 3333
       SERVER_HOST: 0.0.0.0
 
@@ -18,28 +21,29 @@ services:
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    # env_file:
+    # - temp
 
   migrate:
     container_name: coding-app-db-migrate
     build:
       context: ./server
       dockerfile: Dockerfile.prod
-    # command: npm run db:migrate:script
     command: /bin/sh -c "npm run db:migrate:script:test && npm run db:migrate:script"
     depends_on:
       - database-sql
     environment:
       - NODE_ENV=test
-   
 
   client:
     container_name: coding-app-client
-    image: ${CLIENT_IMAGE}
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
     depends_on:
       - server
     environment:
       VITE_BASE_URL: /api1
-
 
   nginx:
     build:
