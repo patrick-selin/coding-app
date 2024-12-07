@@ -9,6 +9,7 @@ const databaseUrl =
     ? config.TEST_DATABASE_URL
     : config.DATABASE_URL;
 
+console.log(`database url in migrate.ts: ${databaseUrl}`);
 if (!databaseUrl) {
   throw new Error("Database URL is not defined");
 }
