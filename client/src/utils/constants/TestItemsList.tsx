@@ -1,6 +1,5 @@
-import "./App.css";
-import TestComponent from "./utils/test-component";
-import testService from "./services/test-service";
+import TestComponent from "../test-component";
+import testService from "../../services/test-service";
 import { useEffect, useState } from "react";
 
 interface TestItem {
@@ -8,7 +7,7 @@ interface TestItem {
   content: string;
   important: boolean;
 }
-function App() {
+function TestItemsList() {
   const [testData, setTestData] = useState<TestItem[]>([]);
 
   useEffect(() => {
@@ -37,4 +36,4 @@ function App() {
   );
 }
 
-export default App;
+export default TestItemsList;

@@ -31,7 +31,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.dev
-    command: npm run db:migrate:script
+    # command: npm run db:migrate:script
+    command: /bin/sh -c "npm run db:migrate:script:test && npm run db:migrate:script"
     depends_on:
       - database-sql
     environment:

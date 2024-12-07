@@ -11,11 +11,11 @@ const TestComponent: React.FC = () => {
 
   return (
     <>
-      <br />
-      <br />
       <div>Test Component</div>
       <button onClick={generateRandomNumber}>Generate Random Number</button>
       {randomNumber !== null && <div>Random Number: {randomNumber}</div>}
+      <div>
+      </div>
     </>
   );
 };
