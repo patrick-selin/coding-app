@@ -22,7 +22,9 @@
     "db:migrate": "drizzle-kit up",
     "db:migrate:test": "env NODE_ENV=test drizzle-kit up",
     "db:migrate:script": "tsx src/db/migrate.ts",
-    "db:migrate:script:test": "env NODE_ENV=test tsx src/db/migrate.ts"
+    "db:migrate:script:test": "env NODE_ENV=test tsx src/db/migrate.ts",
+    "db:migrate:script:ci": "node build/src/db/migrate.js",
+    "db:migrate:script:test:ci": "env NODE_ENV=test node build/src/db/migrate.js"
   },
   "keywords": [],
   "author": "",
