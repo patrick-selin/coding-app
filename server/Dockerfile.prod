@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN yarn install
+RUN yarn install --production=false
 
 COPY . .
 
@@ -20,8 +20,6 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/build ./build
-# COPY --from=builder /usr/src/app/vitest.integration.config.ts ./
-COPY --from=builder /usr/src/app/src/db/migrate.ts ./src/db/migrate.ts
 
 RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
 RUN chown -R nodejs:nodejs /usr/src/app
