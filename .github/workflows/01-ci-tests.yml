@@ -1,0 +1,196 @@
+name: Unit and Integration Tests
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/*"
+      - "fix/*"
+
+    # pull_request:
+    #   branches: [main]
+    #   types: [opened, synchronize]
+
+    paths-ignore:
+      - README.md
+      - docs/**
+
+jobs:
+  client-unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ./client/node_modules
+          key: ${{ runner.os }}-client-node-${{ hashFiles('client/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-client-node-
+
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: ./client
+
+      - name: Run frontend unit tests
+        run: npm run test:unit:ci
+        working-directory: ./client
+
+      - name: Upload frontend coverage results
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-coverage
+          path: client/coverage
+
+  server-unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ./server/node_modules
+          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-server-node-
+
+      - name: Install server dependencies
+        run: npm install
+        working-directory: ./server
+
+      - name: Run server unit tests
+        run: npm run test:unit:ci
+        working-directory: ./server
+
+      - name: Upload server coverage results
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-coverage
+          path: server/coverage
+
+  integration-tests:
+    needs: [client-unit-tests, server-unit-tests]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      NODE_ENV: test
+      TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+      # DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      # POSTGRES_HOST: database-sql
+      # POSTGRES_PORT: 5432
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_DB: coding-app-db-test
+      SERVER_PORT: 3333
+      SERVER_HOST: 0.0.0.0
+      VITE_BASE_URL: /api1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Start Application with Docker Compose
+        run: |
+          docker-compose -f docker-compose.ci.yml up -d
+          echo "Waiting for services to be ready..."
+          until curl -s http://localhost:80/health; do
+            echo "Waiting for backend to be ready..."
+            sleep 8
+          done
+          echo "Services are ready!"
+
+      - name: Wait for Postgres DB to be ready
+        run: |
+          until docker exec coding-app-postgresql-db pg_isready -U ${{ secrets.POSTGRES_USER }}; do
+            echo "Waiting for Postgres to be ready..."
+            sleep 8
+          done
+          echo "Postgres is ready!"
+        continue-on-error: true
+
+      - name: Create test database if it doesn't exist
+        run: |
+          echo "Creating test database if it doesn't exist..."
+          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'coding-app-db-test') THEN EXECUTE 'CREATE DATABASE coding-app-db-test'; END IF; END \$\$;"
+        continue-on-error: true
+
+      - name: Run generate migration files TEST-DB
+        run: |
+          docker-compose -f docker-compose.ci.yml exec server npm run db:generate:test
+        continue-on-error: true
+
+      - name: Run drizzle kit migrations TEST-SB
+        run: |
+          docker-compose -f docker-compose.ci.yml exec server sh -c "NODE_ENV=test npx drizzle-kit generate"
+
+        continue-on-error: true
+
+      - name: Run migration script TEST-DB
+        run: |
+          docker-compose -f docker-compose.ci.yml exec server npm run db:migrate:script:test
+        continue-on-error: true
+
+      # Debug
+      - name: Check migration logs
+        run: |
+          echo "Checking migration logs..."
+          docker logs coding-app-db-migrate
+        continue-on-error: true
+
+      # Debug
+      - name: Check all databases for the user
+        run: |
+          echo "Listing all databases for user..."
+          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -c "\l"
+        continue-on-error: true
+
+      # Debug
+      - name: Check database tables
+        run: |
+          echo "Listing tables in the TEST database..."
+          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "\dt"
+        continue-on-error: true
+
+      - name: Run Integration Tests
+        run: |
+          docker-compose -f docker-compose.ci.yml exec server npm run test:integration:ci
+
+      - name: Upload Integration Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results
+          path: ./integration-tests/results

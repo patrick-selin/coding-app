@@ -1,17 +1,19 @@
 name: Unit Tests
 
-on:
-  push:
-    branches:
-      - main
-      - "feature/*"
-    # pull_request:
-    #   branches: [main]
-    #   types: [opened, synchronize]
-    #
-    paths-ignore:
-      - README.md
-      - docs/**
+# on:
+#   push:
+#     branches:
+#       - main
+#       - "feature/*"
+#       - "fix/*"
+      
+#     # pull_request:
+#     #   branches: [main]
+#     #   types: [opened, synchronize]
+#     #
+#     paths-ignore:
+#       - README.md
+#       - docs/**
 
 jobs:
   client-unit-tests:
