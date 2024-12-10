@@ -6,14 +6,16 @@ on:
       - main
       - "feature/*"
       - "fix/*"
-
-    # pull_request:
-    #   branches: [main]
-    #   types: [opened, synchronize]
-
     paths-ignore:
       - README.md
       - docs/**
+
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
 
 jobs:
   client-unit-tests:
@@ -39,6 +41,18 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm install
+        working-directory: ./client
+
+      - name: Check style/lint
+        run: npm run lint
+        working-directory: ./client
+
+      - name: Run TypeScript type checks
+        run: npm run typecheck
+        working-directory: ./client
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high
         working-directory: ./client
 
       - name: Run frontend unit tests
@@ -73,8 +87,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-server-node-
 
+      - name: Remove node_modules
+        run: rm -rf node_modules package-lock.json
+        working-directory: ./server
+
       - name: Install server dependencies
         run: npm install
+        working-directory: ./server
+
+      - name: Run TypeScript type checks
+        run: npm run tsc --noEmit
+        working-directory: ./server
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high
         working-directory: ./server
 
       - name: Run server unit tests
@@ -96,9 +122,7 @@ jobs:
     env:
       NODE_ENV: test
       TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
-      # DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      # POSTGRES_HOST: database-sql
-      # POSTGRES_PORT: 5432
+
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_DB: coding-app-db-test
