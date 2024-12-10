@@ -60,6 +60,5 @@ override.tf.json
 terraform.rc
 
 
-docker-compose.temp-ci
-docker-compose.temp-ci.yml
-docker-compose.temp-ci.yml
+docker-compose.temp-prod.
+docker-compose.temp-prod.yml

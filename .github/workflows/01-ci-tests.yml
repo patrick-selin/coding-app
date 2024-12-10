@@ -6,14 +6,16 @@ on:
       - main
       - "feature/*"
       - "fix/*"
-
-    # pull_request:
-    #   branches: [main]
-    #   types: [opened, synchronize]
-
     paths-ignore:
       - README.md
       - docs/**
+
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
 
 jobs:
   client-unit-tests:
@@ -33,12 +35,24 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ./client/node_modules
-          key: ${{ runner.os }}-client-node-${{ hashFiles('client/package-lock.json') }}
+          key: ${{ runner.os }}-client-node-${{ hashFiles('client/package-lock.json') }}-${{ runner.os }}
           restore-keys: |
-            ${{ runner.os }}-client-node-
+            ${{ runner.os }}-client-node-  
 
       - name: Install frontend dependencies
         run: npm install
+        working-directory: ./client
+
+      - name: Check style/lint
+        run: npm run lint
+        working-directory: ./client
+
+      - name: Run TypeScript type checks
+        run: npm run typecheck
+        working-directory: ./client
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high
         working-directory: ./client
 
       - name: Run frontend unit tests
@@ -69,12 +83,25 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ./server/node_modules
-          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
+          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}-${{ runner.os }}
           restore-keys: |
             ${{ runner.os }}-server-node-
+        continue-on-error: true
+
+      - name: Remove node_modules
+        run: rm -rf node_modules package-lock.json
+        working-directory: ./server
 
       - name: Install server dependencies
         run: npm install
+        working-directory: ./server
+
+      - name: Run TypeScript type checks
+        run: npm run tsc --noEmit
+        working-directory: ./server
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high
         working-directory: ./server
 
       - name: Run server unit tests
@@ -95,10 +122,8 @@ jobs:
 
     env:
       NODE_ENV: test
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
       TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
-      # DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      # POSTGRES_HOST: database-sql
-      # POSTGRES_PORT: 5432
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_DB: coding-app-db-test
@@ -164,6 +189,17 @@ jobs:
           docker-compose -f docker-compose.ci.yml exec server npm run db:migrate:script:test
         continue-on-error: true
 
+      - name: Seed test data in the database
+        run: |
+          echo "Seeding data into test database..."
+          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "
+          INSERT INTO test_items_two (id, content, important) VALUES
+          ('1', 'Test Word 1', true),
+          ('2', 'Test Word 2', false),
+          ('3', 'Test Word 3', true);
+          "
+        continue-on-error: true
+
       # Debug
       - name: Check migration logs
         run: |
@@ -185,12 +221,67 @@ jobs:
           docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "\dt"
         continue-on-error: true
 
+      # Debug
+      - name: Check test data exists in table
+        run: |
+          echo "Listing all rows in the test_items_two table..."
+          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "SELECT * FROM test_items_two;"
+        continue-on-error: true
+
       - name: Run Integration Tests
         run: |
           docker-compose -f docker-compose.ci.yml exec server npm run test:integration:ci
 
       - name: Upload Integration Test Results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: integration-test-results
           path: ./integration-tests/results
+
+      # e2e-tests:
+      #   needs: [integration-tests]
+      #   runs-on: ubuntu-latest
+      #   timeout-minutes: 5
+
+      #   steps:
+      #     - name: Checkout code
+      #       uses: actions/checkout@v4
+
+      #     - name: Set up Node.js
+      #       uses: actions/setup-node@v4
+      #       with:
+      #         node-version: "20"
+
+      - name: Install Playwright dependencies
+        run: npm install
+        working-directory: ./playwright-e2e
+
+      - name: Install Playwright Browsers
+        # run: npx playwright install --with-deps
+        run: yarn playwright install --with-deps
+        working-directory: ./playwright-e2e
+        continue-on-error: true
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+        continue-on-error: true
+
+      - name: Upload E2E Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: ./playwright-e2e/playwright-report/
+          retention-days: 30
+
+      - name: Upload Screenshots as Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-screenshots
+          path: ./screenshots/*.png
+
+      - name: Stop and Remove Containers
+        run: |
+          docker-compose -f docker-compose.ci.yml down

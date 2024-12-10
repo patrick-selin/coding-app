@@ -2,17 +2,18 @@ import { test, expect } from "@playwright/test";
 
 test.describe("App data fetching with backend", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("http://localhost:80");
+    await page.goto("http://localhost:80/home");
   });
 
-  test("should display fetched data from the server/db", async ({ page }) => {
-    await expect(page.locator("h2")).toHaveText("TestData");
+  test("should display the first fetched test data from the server/db in the <main>-tag", async ({ page }) => {
+    await expect(page.locator("h2")).toHaveText("TestData", { timeout: 10000 });
 
-    const firstItem = page.locator("li").first();
-    await expect(firstItem.locator("h3")).not.toBeEmpty();
-    await expect(firstItem.locator("h3")).toHaveText("Test Word 1");
+    const firstItem = page.locator("main li").first();
+    await expect(firstItem).toHaveCount(1, { timeout: 10000 });
 
-    await expect(firstItem.locator("p")).not.toBeEmpty();
-    await expect(firstItem.locator("p")).toHaveText("Important");
+    await expect(firstItem.locator("h3")).toHaveText("Test Word 1", { timeout: 10000 });
+    await expect(firstItem.locator("p")).toHaveText("Important", { timeout: 10000 });
+
+    await page.screenshot({ path: 'screenshot.png' });
   });
 });

@@ -1,13 +1,13 @@
-# name: Build Application
+name: Build and Push Production Docker Images
 
-# on:
-#   workflow_run:
-#     workflows: ["Unit Tests"]
-#     types:
-#       - completed
+on:
+  workflow_run:
+    workflows: ["Unit and Integration Tests"]
+    types:
+      - completed
 
-# jobs:
-  build:
+jobs:
+  build-application-and-images:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     strategy:
@@ -34,10 +34,6 @@
           restore-keys: |
             ${{ runner.os }}-${{ matrix.app }}-node-
 
-      # - name: Install dependencies
-      #   run: npm ci
-      #   working-directory: ${{ matrix.app == 'client' && './client' || './server' }}
-
       - name: Build application
         run: npm run build
         working-directory: ${{ matrix.app == 'client' && './client' || './server' }}
@@ -54,11 +50,28 @@
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push to Docker Hub
+      # aws
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+  
+      - name: Log in to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+
+      # Docker Hub and AWS ECR
+      - name: Build and push to Docker Hub and AWS ECR
         id: build
         uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.app == 'client' && './client' || './server' }}
           file: ${{ matrix.app == 'client' && './client/Dockerfile.prod' || './server/Dockerfile.prod' }}
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-${{ github.sha }}
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-${{ github.sha }}
+            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_REPO_NAME }}:${{ matrix.app }}-${{ github.sha }}
+          platforms: linux/amd64  
