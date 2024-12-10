@@ -19,7 +19,6 @@ function TestItemsList() {
 
   return (
     <>
-      <h1>Vite + React with TS</h1>
       <TestComponent />
       <div>
         <h2>TestData</h2>

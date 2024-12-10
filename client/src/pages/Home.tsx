@@ -4,7 +4,7 @@ import TestItemsList from "../utils/constants/TestItemsList";
 function Home() {
   return (
     <div>
-      <Title order={1}>Vite + React with T - home</Title>
+      <Title order={1}>Home</Title>
       <TestItemsList />
     </div>
   );
