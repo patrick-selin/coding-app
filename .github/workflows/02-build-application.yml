@@ -12,9 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [frontend-proxy, server]
-    
-        
+        app: [client, server] #
+    outputs:
+      client_sha: ${{ steps.set_output_client.outputs.frontend-proxy_image_sha || '' }}
+      server_image_sha: ${{ steps.set_output_server.outputs.server_image_sha || '' }}
 
     steps:
       - name: Checkout code
@@ -28,14 +29,14 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v4
         with:
-          path: ${{ matrix.app == 'frontend-proxy' && './client/node_modules' || './server/node_modules' }}
-          key: ${{ runner.os }}-${{ matrix.app }}-node-${{ matrix.app == 'frontend-proxy' && hashFiles('client/package-lock.json') || hashFiles('server/package-lock.json') }}
+          path: ${{ matrix.app == 'client' && './client/node_modules' || './server/node_modules' }}
+          key: ${{ runner.os }}-${{ matrix.app }}-node-${{ matrix.app == 'client' && hashFiles('client/package-lock.json') || hashFiles('server/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.app }}-node-
 
       - name: Build application
         run: npm run build
-        working-directory: ${{ matrix.app == 'frontend-proxy' && './client' || './server' }}
+        working-directory: ${{ matrix.app == 'client' && './client' || './server' }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -49,6 +50,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # aws
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -65,8 +67,8 @@ jobs:
         id: build
         uses: docker/build-push-action@v6
         with:
-          context: ${{ matrix.app == 'frontend-proxy' && './client' || './server' }}
-          file: ${{ matrix.app == 'frontend-proxy' && './client/Dockerfile.prod' || './server/Dockerfile.prod' }}
+          context: ${{ matrix.app == 'client' && './client' || './server' }}
+          file: ${{ matrix.app == 'client' && './client/Dockerfile.prod' || './server/Dockerfile.prod' }}
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-${{ github.sha }}
