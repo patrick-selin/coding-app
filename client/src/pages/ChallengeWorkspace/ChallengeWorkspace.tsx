@@ -1,5 +1,5 @@
 // pages/ChallengeWorkspace.tsx
-import { useParams } from 'react-router-dom'; 
+import { useParams } from "react-router";
 
 function ChallengeWorkspace() {
   const { id } = useParams();

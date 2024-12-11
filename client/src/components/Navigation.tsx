@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useMantineColorScheme, Button, Group } from "@mantine/core";
 
 const Navigation = () => {

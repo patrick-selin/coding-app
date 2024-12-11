@@ -7,6 +7,7 @@ COPY package*.json ./
 RUN yarn install
 
 COPY . .
+ENV VITE_BASE_URL=/api1
 RUN npm run build
 
 FROM nginx:1.27.1-alpine

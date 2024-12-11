@@ -152,7 +152,7 @@ jobs:
         run: |
           docker-compose -f docker-compose.ci.yml up -d
           echo "Waiting for services to be ready..."
-          until curl -s http://localhost:80/health; do
+          until curl -s http://localhost/api1/health; do
             echo "Waiting for backend to be ready..."
             sleep 8
           done
