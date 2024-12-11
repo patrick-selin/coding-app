@@ -20,9 +20,10 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/build ./build
+COPY ./migrations /usr/src/app/migrations
 
 RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
 RUN chown -R nodejs:nodejs /usr/src/app
 USER nodejs
 
-CMD ["node", "build/src/index.js"]
+CMD npm run db:migrate:script:prod && node build/src/index.js
