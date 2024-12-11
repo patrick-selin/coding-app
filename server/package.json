@@ -22,7 +22,8 @@
     "db:migrate": "drizzle-kit up",
     "db:migrate:test": "NODE_ENV=test drizzle-kit up",
     "db:migrate:script": "tsx src/db/migrate.ts",
-    "db:migrate:script:test": "NODE_ENV=test npx drizzle-kit migrate && env NODE_ENV=test npx tsx src/db/migrate.ts"
+    "db:migrate:script:test": "NODE_ENV=test npx drizzle-kit migrate && env NODE_ENV=test npx tsx src/db/migrate.ts",
+    "db:migrate:script:prod": "NODE_ENV=production npx drizzle-kit migrate --config ./build/drizzle.config.js && NODE_ENV=production node /usr/src/app/build/src/db/migrate.js"
   },
   "keywords": [],
   "author": "",

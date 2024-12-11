@@ -1,16 +1,19 @@
-# docker-compose.prod.yml
+# temppi prod
 services:
   server:
     container_name: coding-app-server
-    image: #
+    build:
+      context: ./server
+      dockerfile: Dockerfile.prod
     depends_on:
       - database-sql
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      SERVER_PORT: #
-      SERVER_HOST: #
-      DATABASE_URL: #
+      SERVER_PORT: 3333
+      SERVER_HOST: 0.0.0.0 # ei toimi ku taa
+      POSTGRES_DB: coding-app-db
+      DATABASE_URL: postgres://patrick:jlafei8910fQQ-Hw92.W1l@database-sql:5432/coding-app-db
 
   database-sql:
     container_name: coding-app-postgresql-db
@@ -19,12 +22,23 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: #
-      POSTGRES_HOST: #
-      POSTGRES_PORT: #
-      POSTGRES_PASSWORD: #
-      POSTGRES_USER: #
-      
+      POSTGRES_DB: coding-app-db
+      POSTGRES_HOST: database-sql
+      POSTGRES_PORT: 5432
+      POSTGRES_PASSWORD: jlafei8910fQQ-Hw92.W1l
+      POSTGRES_USER: patrick
+
+  # migrate:
+  #   container_name: coding-app-db-migrate
+  #   build:
+  #     context: ./server
+  #     dockerfile: Dockerfile.prod
+  #   command: /bin/sh -c "npm run db:migrate:script:test && npm run db:migrate:script"
+  #   depends_on:
+  #     - database-sql
+  #   environment:
+  #     - NODE_ENV=production
+
   client:
     container_name: coding-app-client
     build:
@@ -33,7 +47,7 @@ services:
     depends_on:
       - server
     environment:
-      VITE_BASE_URL: #
+      VITE_BASE_URL: /api1
     expose:
       - "80"
 

@@ -60,5 +60,7 @@ override.tf.json
 terraform.rc
 
 
-docker-compose.temp-prod.
+docker-compose.temp-prod
 docker-compose.temp-prod.yml
+dcker-compose.temp.stag
+docker-compose.temp.stag.yml
