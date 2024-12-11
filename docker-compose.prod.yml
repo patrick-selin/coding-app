@@ -2,17 +2,15 @@
 services:
   server:
     container_name: coding-app-server
-    image: patske3000/coding-app:server-529b4f2c7d2560faa8727dbb8fdb2deab25fb288
+    image: #
     depends_on:
       - database-sql
     restart: unless-stopped
-    env_file:
-      - server/.env.development
     environment:
       NODE_ENV: production
-      DATABASE_URL: postgres://patrick:jlafei8910fQQ-Hw92.W1l@database-sql:5432/coding-app-db
-      SERVER_PORT: 3333
-      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: #
+      SERVER_HOST: #
+      DATABASE_URL: #
 
   database-sql:
     container_name: coding-app-postgresql-db
@@ -20,14 +18,33 @@ services:
     restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: #
+      POSTGRES_HOST: #
+      POSTGRES_PORT: #
+      POSTGRES_PASSWORD: #
+      POSTGRES_USER: #
+      
+  migrate:
+    container_name: coding-app-db-migrate
+    build:
+      context: ./server
+      dockerfile: Dockerfile.prod
+    command: /bin/sh -c "npm run db:migrate:script:test && npm run db:migrate:script"
+    depends_on:
+      - database-sql
+    environment:
+      - NODE_ENV=production
 
   client:
     container_name: coding-app-client
-    image: patske3000/coding-app:client-529b4f2c7d2560faa8727dbb8fdb2deab25fb288
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
     depends_on:
       - server
     environment:
-      VITE_BASE_URL: /api1
+      VITE_BASE_URL: #
     expose:
       - "80"
 

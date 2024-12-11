@@ -4,6 +4,7 @@ import express, { Application } from "express";
 import cors from "cors";
 import morganMiddleware from "./middleware/morgan";
 import { unknownEndpoint } from "./middleware/unknownEndpoint";
+import healthCheckRoutes from "./routes/healthRoutes";
 import testRoutes from "./routes/testRoutes";
 
 const app: Application = express();
@@ -17,11 +18,9 @@ app.get("/", (_req, res) => {
   res.send("Hello app");
 });
 
-app.get("/health", (_req, res) => {
-  res.json({ status: "OK" });
-});
-
+app.use("/api1", healthCheckRoutes);
 app.use("/api1", testRoutes);
+app.use("/", healthCheckRoutes);
 
 // middleware
 app.use(unknownEndpoint);
