@@ -11,7 +11,7 @@ services:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
-      - migrate
+      # - migrate
       - database-sql
     command: ["npx", "tsx", "watch", "src/index.ts"]
     env_file:
