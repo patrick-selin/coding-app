@@ -1,0 +1,19 @@
+# stag
+services:
+  server:
+    container_name: coding-app-server
+    image: #
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      SERVER_PORT: ${SERVER_PORT}
+      SERVER_HOST: ${SERVER_HOST}
+      POSTGRES_DB: coding_app_db_stag
+      DATABASE_URL: ${DATABASE_URL_STAG}
+
+  frontend-proxy:
+    image: #
+    container_name: frontend-proxy
+    ports:
+      - "80:80"
+    restart: unless-stopped

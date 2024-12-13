@@ -15,6 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # infra ylös
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -34,3 +35,15 @@ jobs:
 
       - name: Apply Terraform
         run: echo "Apply..!"
+
+      # alusta serveri
+
+      # docker compose staging
+
+      # run db-staging migrations  
+
+      # run tests
+
+      # if ok, --> deploy to PROD
+
+      # destroy staging

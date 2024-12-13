@@ -16,7 +16,7 @@ const sslConfig =
   config.NODE_ENV === "production"
     ? {
         rejectUnauthorized: true,
-        ca: fs.readFileSync("/usr/src/app/global-bundle.pem").toString(),
+        ca: fs.readFileSync("./global-bundle.pem").toString(),
       }
     : undefined;
 
