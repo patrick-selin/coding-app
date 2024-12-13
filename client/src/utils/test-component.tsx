@@ -11,7 +11,7 @@ const TestComponent: React.FC = () => {
 
   return (
     <>
-      <div>Test Component 3</div>
+      <div>Test Component 4</div>
       <button onClick={generateRandomNumber}>Generate Random Number</button>
       {randomNumber !== null && <div>Random Number: {randomNumber}</div>}
       <div></div>

@@ -1,8 +1,8 @@
-# stag
+# docker-compose.stag.yml
 services:
   server:
     container_name: coding-app-server
-    image: #
+    image: ${SERVER_IMAGE}
     restart: unless-stopped
     environment:
       NODE_ENV: production
@@ -12,7 +12,7 @@ services:
       DATABASE_URL: ${DATABASE_URL_STAG}
 
   frontend-proxy:
-    image: #
+    image: ${FRONTEND_IMAGE}
     container_name: frontend-proxy
     ports:
       - "80:80"
