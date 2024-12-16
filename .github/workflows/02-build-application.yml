@@ -12,10 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [client, server] #
-    outputs:
-      client_sha: ${{ steps.set_output_client.outputs.frontend-proxy_image_sha || '' }}
-      server_image_sha: ${{ steps.set_output_server.outputs.server_image_sha || '' }}
+        app: [client, server]
 
     steps:
       - name: Checkout code
@@ -50,7 +47,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # aws
+      # AWS credentials for pushing to ECR
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -62,9 +59,8 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # Docker Hub and AWS ECR
-      - name: Build and push to Docker Hub and AWS ECR
-        id: build
+      # Build and push image
+      - name: Build and push image
         uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.app == 'client' && './client' || './server' }}
@@ -74,3 +70,9 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/coding-app:${{ matrix.app }}-${{ github.sha }}
             ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_REPO_NAME }}:${{ matrix.app }}-${{ github.sha }}
           platforms: linux/amd64
+
+      - name: Debug GitHub SHA
+        run: |
+          echo "GitHub SHA: ${{ github.sha }}"
+          echo "Matrix App: ${{ matrix.app }}"
+  
