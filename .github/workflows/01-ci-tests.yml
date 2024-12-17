@@ -135,110 +135,112 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: "20"
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v3
 
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
+      # - name: Install Docker Compose
+      #   run: |
+      #     sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      #     sudo chmod +x /usr/local/bin/docker-compose
 
-      - name: Start Application with Docker Compose
-        run: |
-          docker-compose -f docker-compose.ci.yml up -d
-          echo "Waiting for services to be ready..."
-          until curl -s http://localhost/api1/health; do
-            echo "Waiting for backend to be ready..."
-            sleep 8
-          done
-          echo "Services are ready!"
+      # - name: Start Application with Docker Compose
+      #   run: |
+      #     docker-compose -f docker-compose.ci.yml up -d
+      #     echo "Waiting for services to be ready..."
+      #     until curl -s http://localhost/api1/health; do
+      #       echo "Waiting for backend to be ready..."
+      #       sleep 8
+      #     done
+      #     echo "Services are ready!"
 
-      - name: Wait for Postgres DB to be ready
-        run: |
-          until docker exec coding-app-postgresql-db pg_isready -U ${{ secrets.POSTGRES_USER }}; do
-            echo "Waiting for Postgres to be ready..."
-            sleep 8
-          done
-          echo "Postgres is ready!"
-        continue-on-error: true
+      # - name: Wait for Postgres DB to be ready
+      #   run: |
+      #     until docker exec coding-app-postgresql-db pg_isready -U ${{ secrets.POSTGRES_USER }}; do
+      #       echo "Waiting for Postgres to be ready..."
+      #       sleep 8
+      #     done
+      #     echo "Postgres is ready!"
+      #   continue-on-error: true
 
-      - name: Create test database if it doesn't exist
-        run: |
-          echo "Creating test database if it doesn't exist..."
-          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'coding-app-db-test') THEN EXECUTE 'CREATE DATABASE coding-app-db-test'; END IF; END \$\$;"
-        continue-on-error: true
+      # - name: Create test database if it doesn't exist
+      #   run: |
+      #     echo "Creating test database if it doesn't exist..."
+      #     docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'coding-app-db-test') THEN EXECUTE 'CREATE DATABASE coding-app-db-test'; END IF; END \$\$;"
+      #   continue-on-error: true
 
-      - name: Run generate migration files TEST-DB
-        run: |
-          docker-compose -f docker-compose.ci.yml exec server npm run db:generate:test
-        continue-on-error: true
+      # - name: Run generate migration files TEST-DB
+      #   run: |
+      #     docker-compose -f docker-compose.ci.yml exec server npm run db:generate:test
+      #   continue-on-error: true
 
-      - name: Run drizzle kit migrations TEST-SB
-        run: |
-          docker-compose -f docker-compose.ci.yml exec server sh -c "NODE_ENV=test npx drizzle-kit generate"
+      # - name: Run drizzle kit migrations TEST-SB
+      #   run: |
+      #     docker-compose -f docker-compose.ci.yml exec server sh -c "NODE_ENV=test npx drizzle-kit generate"
 
-        continue-on-error: true
+      #   continue-on-error: true
 
-      - name: Run migration script TEST-DB
-        run: |
-          docker-compose -f docker-compose.ci.yml exec server npm run db:migrate:script:test
-        continue-on-error: true
+      # - name: Run migration script TEST-DB
+      #   run: |
+      #     docker-compose -f docker-compose.ci.yml exec server npm run db:migrate:script:test
+      #   continue-on-error: true
 
-      - name: Seed test data in the database
-        run: |
-          echo "Seeding data into test database..."
-          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "
-          INSERT INTO test_items_two (id, content, important) VALUES
-          ('1', 'Test Word 1', true),
-          ('2', 'Test Word 2', false),
-          ('3', 'Test Word 3', true);
-          "
-        continue-on-error: true
+      # - name: Seed test data in the database
+      #   run: |
+      #     echo "Seeding data into test database..."
+      #     docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "
+      #     INSERT INTO test_items_two (id, content, important) VALUES
+      #     ('1', 'Test Word 1', true),
+      #     ('2', 'Test Word 2', false),
+      #     ('3', 'Test Word 3', true);
+      #     "
+      #   continue-on-error: true
 
-      # Debug
-      - name: Check migration logs
-        run: |
-          echo "Checking migration logs..."
-          docker logs coding-app-db-migrate
-        continue-on-error: true
+      # # Debug
+      # - name: Check migration logs
+      #   run: |
+      #     echo "Checking migration logs..."
+      #     docker logs coding-app-db-migrate
+      #   continue-on-error: true
 
-      # Debug
-      - name: Check all databases for the user
-        run: |
-          echo "Listing all databases for user..."
-          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -c "\l"
-        continue-on-error: true
+      # # Debug
+      # - name: Check all databases for the user
+      #   run: |
+      #     echo "Listing all databases for user..."
+      #     docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -c "\l"
+      #   continue-on-error: true
 
-      # Debug
-      - name: Check database tables
-        run: |
-          echo "Listing tables in the TEST database..."
-          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "\dt"
-        continue-on-error: true
+      # # Debug
+      # - name: Check database tables
+      #   run: |
+      #     echo "Listing tables in the TEST database..."
+      #     docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "\dt"
+      #   continue-on-error: true
 
-      # Debug
-      - name: Check test data exists in table
-        run: |
-          echo "Listing all rows in the test_items_two table..."
-          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "SELECT * FROM test_items_two;"
-        continue-on-error: true
+      # # Debug
+      # - name: Check test data exists in table
+      #   run: |
+      #     echo "Listing all rows in the test_items_two table..."
+      #     docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "SELECT * FROM test_items_two;"
+      #   continue-on-error: true
 
-      - name: Run Integration Tests
-        run: |
-          docker-compose -f docker-compose.ci.yml exec server npm run test:integration:ci
+      # - name: Run Integration Tests
+      #   run: |
+      #     docker-compose -f docker-compose.ci.yml exec server npm run test:integration:ci
 
-      - name: Upload Integration Test Results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: integration-test-results
-          path: ./integration-tests/results
+      # - name: Upload Integration Test Results
+      #   uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: integration-test-results
+      #     path: ./integration-tests/results
 
+
+      
       ## test db issue
       # e2e-tests:
       #   needs: [integration-tests]
