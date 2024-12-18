@@ -1,7 +1,7 @@
 # docker-compose.dev.yml
 services:
   server:
-    container_name: coding-app-server
+    container_name: crm-app-server
     environment:
       NODE_ENV: development
     build:
@@ -18,16 +18,21 @@ services:
       - server/.env.development
 
   database-sql:
-    container_name: coding-app-postgresql-db
+    container_name: crm-app-postgresql-db
     image: postgres:16.4-bullseye
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - server/.env.development
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U patrick -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   migrate:
-    container_name: coding-app-db-migrate
+    container_name: crm-app-db-migrate
     build:
       context: ./server
       dockerfile: Dockerfile.dev
@@ -39,8 +44,26 @@ services:
     env_file:
       - server/.env.development
 
+  db-seed:
+    image: postgres:16.4-bullseye
+    depends_on:
+      database-sql:
+        condition: service_healthy
+      migrate:
+        condition: service_started
+    volumes:
+      - ./server/src/db/seed-db.sql:/seed-db.sql
+    env_file:
+      - server/.env.development
+    command: >
+      sh -c "
+        export PGPASSWORD=$$POSTGRES_PASSWORD &&
+        psql -h database-sql -U $$POSTGRES_USER -d crm_app_db_dev -f /seed-db.sql &&
+        psql -h database-sql -U $$POSTGRES_USER -d crm_app_db_test -f /seed-db.sql
+      "
+
   client:
-    container_name: coding-app-client
+    container_name: crm-app-client
     build:
       context: ./client
       dockerfile: Dockerfile.dev
