@@ -160,7 +160,7 @@ jobs:
 
       - name: Wait for Postgres DB to be ready
         run: |
-          until docker exec coding-app-postgresql-db pg_isready -U ${{ secrets.POSTGRES_USER }}; do
+          until docker exec crm-app-postgresql-db pg_isready -U ${{ secrets.POSTGRES_USER }}; do
             echo "Waiting for Postgres to be ready..."
             sleep 8
           done
@@ -170,7 +170,7 @@ jobs:
       - name: Create test database if it doesn't exist
         run: |
           echo "Creating test database if it doesn't exist..."
-          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'coding-app-db-test') THEN EXECUTE 'CREATE DATABASE coding-app-db-test'; END IF; END \$\$;"
+          docker exec crm-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'crm_app_db_test') THEN EXECUTE 'CREATE DATABASE crm_app_db_test'; END IF; END \$\$;"
         continue-on-error: true
 
       - name: Run generate migration files TEST-DB
@@ -192,8 +192,8 @@ jobs:
       - name: Seed test data in the database
         run: |
           echo "Seeding data into test database..."
-          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "
-          INSERT INTO test_items_two (id, content, important) VALUES
+          docker exec crm-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d crm_app_db_test -c "
+          INSERT INTO test_items (id, content, important) VALUES
           ('1', 'Test Word 1', true),
           ('2', 'Test Word 2', false),
           ('3', 'Test Word 3', true);
@@ -204,28 +204,28 @@ jobs:
       - name: Check migration logs
         run: |
           echo "Checking migration logs..."
-          docker logs coding-app-db-migrate
+          docker logs crm-app-db-migrate
         continue-on-error: true
 
       # Debug
       - name: Check all databases for the user
         run: |
           echo "Listing all databases for user..."
-          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -c "\l"
+          docker exec crm-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -c "\l"
         continue-on-error: true
 
       # Debug
       - name: Check database tables
         run: |
           echo "Listing tables in the TEST database..."
-          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "\dt"
+          docker exec crm-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d crm_app_db_test -c "\dt"
         continue-on-error: true
 
       # Debug
       - name: Check test data exists in table
         run: |
           echo "Listing all rows in the test_items_two table..."
-          docker exec coding-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d coding-app-db-test -c "SELECT * FROM test_items_two;"
+          docker exec crm-app-postgresql-dbpsql -U ${{ secrets.POSTGRES_USER }} -d crm_app_db_test -c "SELECT * FROM test_items_two;"
         continue-on-error: true
 
       - name: Run Integration Tests
