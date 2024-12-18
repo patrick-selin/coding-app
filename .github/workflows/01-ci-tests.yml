@@ -158,14 +158,16 @@ jobs:
           done
           echo "Services are ready!"
 
-      - name: Wait for Postgres DB to be ready
+      - name: Create test database if it doesn't exist
         run: |
-          until docker exec crm-app-postgresql-db pg_isready -U ${{ secrets.POSTGRES_USER }}; do
-            echo "Waiting for Postgres to be ready..."
-            sleep 8
-          done
-          echo "Postgres is ready!"
-        continue-on-error: true
+          echo "Checking if test database exists..."
+          if [ "$(docker exec crm-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname = 'crm_app_db_test'")" != "1" ]; then
+            echo "Test database does not exist. Creating it now..."
+            docker exec crm-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d postgres -c "CREATE DATABASE crm_app_db_test;"
+          else
+            echo "Test database already exists."
+          fi
+        shell: bash
 
       - name: Create test database if it doesn't exist
         run: |
@@ -225,7 +227,7 @@ jobs:
       - name: Check test data exists in table
         run: |
           echo "Listing all rows in the test_items_two table..."
-          docker exec crm-app-postgresql-dbpsql -U ${{ secrets.POSTGRES_USER }} -d crm_app_db_test -c "SELECT * FROM test_items_two;"
+          docker exec crm-app-postgresql-db psql -U ${{ secrets.POSTGRES_USER }} -d crm_app_db_test -c "SELECT * FROM test_items_two;"
         continue-on-error: true
 
       - name: Run Integration Tests
