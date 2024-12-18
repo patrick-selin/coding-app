@@ -1,8 +1,8 @@
-# Project Name: Coding Challenge Platform
+# Project Name: CRM app
 
 ## Project Overview
 
-This is a full-stack TypeScript application that allows users to solve coding challenges. The app will support CI/CD pipelines, multi-environment deployments to AWS, and is being set up with infrastructure as code using Terraform.
+This is a full-stack TypeScript application for bacis CRM. The app will support CI/CD pipelines, multi-environment deployments to AWS, and is being set up with infrastructure as code using Terraform.
 
 ## Table of Contents
 

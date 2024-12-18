@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1724651340139,
-      "tag": "0000_grey_stellaris",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1724651737882,
-      "tag": "0001_fancy_whistler",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1724654724306,
-      "tag": "0002_past_mephisto",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1724654751163,
-      "tag": "0003_orange_kulan_gath",
+      "when": 1734511684375,
+      "tag": "0000_classy_baron_strucker",
       "breakpoints": true
     }
   ]
