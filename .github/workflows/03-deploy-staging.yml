@@ -67,16 +67,16 @@ jobs:
       - name: Add EC2 to Known Hosts
         run: |
           ssh-keyscan -H ${{ secrets.AWS_EC2_PUBLIC_IP }} >> ~/.ssh/known_hosts
-      
-      # muista pull changes from repo, branch that has     
+
+      # muista pull changes from repo, branch that has
       - name: Deploy Updated Compose to Staging
         run: |
           scp .env ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }}:/home/ubuntu/crm-app/.env
           scp docker-compose.stag.yml ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }}:/home/ubuntu/crm-app/docker-compose.stag.yml
           ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} "\
             cd /home/ubuntu/crm-app && \
-            git stash \
-            git pull origin ${{ github.event.workflow_run.head_branch }} \
+            git stash && \
+            git pull origin ${{ github.event.workflow_run.head_branch }} && \
             docker-compose --env-file .env -f docker-compose.stag.yml pull && \
             docker-compose --env-file .env -f docker-compose.stag.yml up --build -d"
 
@@ -106,23 +106,23 @@ jobs:
 
       - name: Run Unit Tests on Staging Server
         run: |
-            ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} << 'EOF'
-              echo "Running Unit Tests..."
-              export NVM_DIR="$HOME/.nvm"
-              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} << 'EOF'
+            echo "Running Unit Tests..."
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-              cd /home/ubuntu/crm-app/server
-              echo "Running unit tests in /server..."
-              npm install
-              npm run test:unit:ci || exit 1
+            cd /home/ubuntu/crm-app/server
+            echo "Running unit tests in /server..."
+            npm install
+            npm run test:unit:ci || exit 1
 
-              cd /home/ubuntu/crm-app/client
-              echo "Running unit tests in /client..."
-              npm install
-              npm run test:unit:ci || exit 1
+            cd /home/ubuntu/crm-app/client
+            echo "Running unit tests in /client..."
+            npm install
+            npm run test:unit:ci || exit 1
 
-              echo "Unit tests passed successfully!"
-            EOF
+            echo "Unit tests passed successfully!"
+          EOF
 
       - name: Run E2E Tests on Staging Server
         run: |
@@ -144,9 +144,8 @@ jobs:
             docker system prune -af
             echo "Docker cleanup completed!"
             df -h
-          EOF    
+          EOF
 
-          
       # # run tests
       # - name: Run Unit Tests on Staging Server
       #   run: |
