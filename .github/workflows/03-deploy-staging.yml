@@ -17,6 +17,9 @@ jobs:
       - name: Debug Branch
         run: echo ${{ github.event.workflow_run.head_branch }}
 
+      - name: Debug event
+        run: echo '${{ toJson(github.event.workflow_run) }}'
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -80,6 +83,8 @@ jobs:
             git fetch origin &&
             git checkout dev &&
             git reset --hard origin/dev &&
+            docker stop \$(docker ps -aq) &&
+            docker rm \$(docker ps -aq) &&
             docker-compose --env-file .env -f docker-compose.stag.yml pull &&
             docker-compose --env-file .env -f docker-compose.stag.yml up --build -d"
 
