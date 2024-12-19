@@ -9,7 +9,7 @@ on:
 jobs:
   deploy-staging:
     name: Deploy Staging Environment
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'dev' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -71,13 +71,12 @@ jobs:
       # muista pull changes from repo, branch that has
       - name: Deploy Updated Compose to Staging
         run: |
-          scp .env ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }}:/home/ubuntu/crm-app/.env
-          scp docker-compose.stag.yml ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }}:/home/ubuntu/crm-app/docker-compose.stag.yml
-          ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} "\
-            cd /home/ubuntu/crm-app && \
-            git stash && \
-            git pull origin ${{ github.event.workflow_run.head_branch }} && \
-            docker-compose --env-file .env -f docker-compose.stag.yml pull && \
+          ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} "
+            cd /home/ubuntu/crm-app &&
+            git fetch origin &&
+            git checkout dev &&
+            git reset --hard origin/dev &&
+            docker-compose --env-file .env -f docker-compose.stag.yml pull &&
             docker-compose --env-file .env -f docker-compose.stag.yml up --build -d"
 
       - name: Verify Deployment
