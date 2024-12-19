@@ -43,8 +43,8 @@ jobs:
       - name: Extract Image SHAs
         id: extract-sha
         run: |
-          echo "SERVER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/coding-app:server-${{ github.event.workflow_run.outputs.server_image_sha }}" >> $GITHUB_ENV
-          echo "FRONTEND_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/coding-app:client-${{ github.event.workflow_run.outputs.client_image_sha }}" >> $GITHUB_ENV
+          echo "SERVER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/crm-app:server-${{ github.event.workflow_run.outputs.server_image_sha }}" >> $GITHUB_ENV
+          echo "FRONTEND_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/crm-app:client-${{ github.event.workflow_run.outputs.client_image_sha }}" >> $GITHUB_ENV
 
       - name: Debug Image Variables
         run: |
@@ -53,8 +53,8 @@ jobs:
 
       - name: Create .env File for Staging
         run: |
-          echo "SERVER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/coding-app:server-${{ github.sha }}" > .env
-          echo "FRONTEND_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/coding-app:client-${{ github.sha }}" >> .env
+          echo "SERVER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/crm-app:server-${{ github.sha }}" > .env
+          echo "FRONTEND_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/crm-app:client-${{ github.sha }}" >> .env
           echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
           echo "SERVER_HOST=${{ secrets.SERVER_HOST }}" >> .env
           echo "DATABASE_URL_STAG=${{ secrets.DATABASE_URL_STAG }}" >> .env
@@ -67,14 +67,16 @@ jobs:
       - name: Add EC2 to Known Hosts
         run: |
           ssh-keyscan -H ${{ secrets.AWS_EC2_PUBLIC_IP }} >> ~/.ssh/known_hosts
-
+      
+      # muista pull changes from repo, branch that has     
       - name: Deploy Updated Compose to Staging
         run: |
-          scp .env ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }}:/home/ubuntu/coding-app/.env
-          scp docker-compose.stag.yml ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }}:/home/ubuntu/coding-app/docker-compose.stag.yml
+          scp .env ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }}:/home/ubuntu/crm-app/.env
+          scp docker-compose.stag.yml ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }}:/home/ubuntu/crm-app/docker-compose.stag.yml
           ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} "\
-            cd /home/ubuntu/coding-app && \
-            git pull origin main && \
+            cd /home/ubuntu/crm-app && \
+            git stash \
+            git pull origin ${{ github.event.workflow_run.head_branch }} \
             docker-compose --env-file .env -f docker-compose.stag.yml pull && \
             docker-compose --env-file .env -f docker-compose.stag.yml up --build -d"
 
@@ -90,7 +92,7 @@ jobs:
         run: |
           ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} << 'EOF'
             echo "Switching to project directory..."
-            cd /home/ubuntu/coding-app
+            cd /home/ubuntu/crm-app
             pwd
 
             echo "Loading nvm environment..."
@@ -109,12 +111,12 @@ jobs:
               export NVM_DIR="$HOME/.nvm"
               [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-              cd /home/ubuntu/coding-app/server
+              cd /home/ubuntu/crm-app/server
               echo "Running unit tests in /server..."
               npm install
               npm run test:unit:ci || exit 1
 
-              cd /home/ubuntu/coding-app/client
+              cd /home/ubuntu/crm-app/client
               echo "Running unit tests in /client..."
               npm install
               npm run test:unit:ci || exit 1
@@ -129,7 +131,7 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-            cd /home/ubuntu/coding-app
+            cd /home/ubuntu/crm-app
             npm run test:e2e || exit 1
 
             echo "E2E tests passed successfully!"
@@ -150,7 +152,7 @@ jobs:
       #   run: |
       #     ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} << 'EOF'
       #       echo "Switching to project directory..."
-      #       cd /home/ubuntu/coding-app
+      #       cd /home/ubuntu/crm-app
       #       pwd
 
       #       echo "Loading nvm environment..."
@@ -163,14 +165,14 @@ jobs:
 
       #       # Run Unit Tests in /server
       #       echo "Running Unit Tests in /server..."
-      #       cd /home/ubuntu/coding-app/server
+      #       cd /home/ubuntu/crm-app/server
       #       npm install
       #       npm run test:unit:ci
       #       SERVER_EXIT_CODE=$?
 
       #       # Run Unit Tests in /client
       #       echo "Running Unit Tests in /client..."
-      #       cd /home/ubuntu/coding-app/client
+      #       cd /home/ubuntu/crm-app/client
       #       npm install
       #       npm run test:unit:ci
       #       CLIENT_EXIT_CODE=$?
@@ -188,7 +190,7 @@ jobs:
       #   run: |
       #     ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} << 'EOF'
       #       echo "Switching to project directory..."
-      #       cd /home/ubuntu/coding-app
+      #       cd /home/ubuntu/crm-app
       #       pwd
 
       #       echo "Loading nvm environment..."
