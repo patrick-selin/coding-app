@@ -20,3 +20,4 @@ services:
     # test push to feat/test-stag branch
     # toimiiko
     # test pr flow
+    # build
