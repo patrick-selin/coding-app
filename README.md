@@ -12,7 +12,7 @@ This is a full-stack TypeScript application for bacis CRM. The app will support 
 
 For detailed documentation on various aspects of the project, please refer to the following files:
 
-- **API.md**: API Overview, endpoint documentation, OpenAPI specification, authentication details, error handeling and routing.
+- **[API.md](docs/API.md)**: API Overview, endpoint documentation, OpenAPI specification, authentication details, error handeling and routing.
 - **ARCHITECTURE.md**: High-level overview of the app architecture and service descriptions.
 - **CHANGELOG.md**: A log of project updates, features, and bug fixes.
 - **CI/CD.md**: Overview of the CI/CD pipeline, GitHub Actions workflows.
