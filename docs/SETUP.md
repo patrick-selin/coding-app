@@ -14,8 +14,8 @@ Before getting started, ensure you have the following installed:
 Clone the project repository to your local machine:
 
 ```bash
-git clone https://github.com/patrick-selin/coding-app.git
-cd coding-app
+git clone https://github.com/patrick-selin/crm-app.git
+cd crm-app
 ```
 
 ## Setting Up Environment Variables
@@ -48,13 +48,14 @@ cd coding-app
 ## Docker Setup
 
 ### Running the Application
+
 To run the application locally using Docker, ensure you have Docker installed and running. Then, use the following command to build and start all services (frontend, backend, database, and reverse proxy):
 
 ```bash
 npm run dev
 ```
 
-or 
+or
 
 ```bash
 docker-compose -f docker-compose.dev.yml up --build
@@ -64,12 +65,13 @@ This will start the app using Docker Compose and set up the necessary services f
 
 - **client**: Frontend React app running in the `/client` directory.
 - **server**: Backend Node.js/Express app running in the `/server` directory.
-- **database-sql**: PostgreSQL *development* database service running in a Docker container.
+- **database-sql**: PostgreSQL _development_ database service running in a Docker container.
 - **migrate**: A service that runs database migrations (using Drizzle ORM) whenever necessary.
 - **nginx**: Nginx acts as the reverse proxy to handle incoming requests and route them to the appropriate service (frontend or backend).
 - **volumes**: Data volumes to persist PostgreSQL data (`postgres_data`), ensuring data is not lost when containers are restarted.
 
 ### Accessing the Application
+
 After the services start, access the app in your browser at [http://localhost:80](http://localhost:80). Nginx will serve the frontend for requests to `/` and route API requests to the backend at `/api1/`.
 
 ## Running Tests
@@ -77,6 +79,7 @@ After the services start, access the app in your browser at [http://localhost:80
 The project uses **Vitest** for unit and integration testing, and **Playwright** for end-to-end (E2E) testing. The **unit tests** use the development database, while the **integration** and **E2E tests** use the test database.
 
 ### Unit Tests
+
 1. To run unit tests for the server, use the following command:
 
    ```bash
@@ -89,43 +92,50 @@ The project uses **Vitest** for unit and integration testing, and **Playwright**
    npm run test:unit:client
    ```
 
-###  Integration Tests
-**Integration tests** use the test database. The **test database** is configured in the `docker-compose.test-local.yml` file, which starts a separate PostgreSQL container for testing.
+### Integration Tests
+
+**Integration tests** use the test database.
 
 1. To run the **integration tests** using the test database, use the following command:
 
    ```bash
-   npm run test:integration:server
+   npm run test:integration
    ```
-	This script runs the integration tests while using the test database configured in `docker-compose.test-local.yml`.
 
 ### End-to-End Tests
-1. The **E2E tests** also use the test database, running separately from the development environment. To run the end-to-end tests using Playwright, follow these steps:
+
+1. The **E2E tests** also use the test database. To run the end-to-end tests using Playwright:
 
    1. Run the end-to-end tests:
       ```bash
       npm run test:e2e
-
+      ```
 
 ## Other Available Commands
 
 ### TypeScript Compilation
+
 - **`tsc`**: Compiles the TypeScript files for the backend. **Note**: You need to run this command from the `/server` directory. The frontend uses **Vite**, which automatically compiles the TypeScript files when you run the development server.
 
 ### ESLint (Linting)
+
 - **`lint`**: Runs ESLint to check for code quality and stylistic errors across both frontend and backend code.
   - **For backend linting**, run the command from the `/server` directory.
   - **For frontend linting**, run the command from the `/client` directory.
 
 ### Database Migrations
-The backend uses **Drizzle ORM** for handling database migrations and schema generation. The following commands are available for database-related tasks, run these commands from the `/server` directory.:
 
-- **`db:migrate`**: Run database migrations for the production environment.
-- **`db:migrate:test`**: Run migrations for the test environment.
+The backend uses **Drizzle ORM** for handling database migrations and schema generation. The following commands are available for database-related tasks, run these commands from the `/server` directory:
+
 - **`db:generate`**: Generate the database schema.
 - **`db:generate:test`**: Generate the schema for the test environment.
+- **`db:migrate`**: Run database migrations for the production environment.
+- **`db:migrate:test`**: Run migrations for the test environment.
 
 ### Preview and Build (Client)
+
 For building the client side production version:
 
 - **`build`**: Build the production version of the client app. Run this command from the `/client` directory.
+
+// vai selitaako tassa turhaan, build tapahtuu automaattisesti CI/CD?
