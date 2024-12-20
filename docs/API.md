@@ -23,6 +23,7 @@ Authorization: Bearer <your-token>
 ## **1. Authentication & User Management**
 
 ### **API Endpoints**
+
 | Method | Endpoint               | Description                              |
 |--------|------------------------|------------------------------------------|
 | POST   | `/api/auth/register`   | Register a new user.                     |
@@ -179,5 +180,3 @@ Authorization: Bearer <your-token>
   - `403`: Forbidden
   - `404`: Not Found
   - `500`: Internal Server Error
-
-
