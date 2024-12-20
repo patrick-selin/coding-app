@@ -49,8 +49,8 @@ For detailed documentation on various aspects of the project, please refer to th
 
 ### Local Setup
 
-1. Clone the repository: `git clone https://github.com/patrick-selin/coding-app.git`
-2. Change to the project directory: `cd coding-app`
+1. Clone the repository: `git clone https://github.com/patrick-selin/crm-app.git`
+2. Change to the project directory: `cd crm-app`
 3. Rename the `.env.development.EXAMPLE` file to `.env.development` in the **/server** folder and **/client** folder, and fill in the necessary environment variables:
 
 - For the **/server** folder, the following environment variables are required:
