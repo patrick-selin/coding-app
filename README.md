@@ -85,7 +85,8 @@ For detailed setup instructions and information on running the tests, refer to t
 The project consists of the following directories:
 
 - **/client**: React app for the frontend.
-- **/server**: Node.js/Express server for the backend. This folder also contains PostgreSQL setup, Drizzle ORM, and migration scripts.
+- **/server**: Node.js/Express server for the backend.
+- **/server/db**: PostgreSQL setup, Drizzle ORM, and migration scripts.
 - **/terraform**: Infrastructure setup and provisioning using Terraform.
 - **/docs**: Project documentation.
 - **/.github/workflows**: GitHub Actions workflows for CI/CD pipelines.

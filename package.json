@@ -1,7 +1,7 @@
 {
   "name": "crm-app",
   "version": "1.0.0",
-  "description": "ccrm-app-commands",
+  "description": "crm-app-commands",
   "main": "index.js",
   "directories": {
     "doc": "docs"
