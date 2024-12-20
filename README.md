@@ -12,7 +12,7 @@ This is a full-stack TypeScript application for bacis CRM. The app will support 
 
 For detailed documentation on various aspects of the project, please refer to the following files:
 
-- **API.md**: API Overview, endpoint documentation, OpenAPI specification, authentication details, error handeling and routing.
+- **[API.md](docs/API.md)**: API Overview, endpoint documentation, OpenAPI specification, authentication details, error handeling and routing.
 - **ARCHITECTURE.md**: High-level overview of the app architecture and service descriptions.
 - **CHANGELOG.md**: A log of project updates, features, and bug fixes.
 - **CI/CD.md**: Overview of the CI/CD pipeline, GitHub Actions workflows.
@@ -85,7 +85,8 @@ For detailed setup instructions and information on running the tests, refer to t
 The project consists of the following directories:
 
 - **/client**: React app for the frontend.
-- **/server**: Node.js/Express server for the backend. This folder also contains PostgreSQL setup, Drizzle ORM, and migration scripts.
+- **/server**: Node.js/Express server for the backend.
+- **/server/db**: PostgreSQL setup, Drizzle ORM, and migration scripts.
 - **/terraform**: Infrastructure setup and provisioning using Terraform.
 - **/docs**: Project documentation.
 - **/.github/workflows**: GitHub Actions workflows for CI/CD pipelines.
