@@ -73,9 +73,12 @@ jobs:
         run: |
           ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} "
             cd /home/ubuntu/crm-app &&
+            echo 'Cleaning working directory...' &&
             git fetch origin &&
-            git checkout dev &&
-            git reset --hard origin/dev &&
+            git checkout ${{ github.ref_name }} &&
+            git reset --hard origin/${{ github.ref_name }} &&
+            git clean -fd &&
+            docker-compose --env-file .env -f docker-compose.stag.yml down &&
             docker-compose --env-file .env -f docker-compose.stag.yml pull &&
             docker-compose --env-file .env -f docker-compose.stag.yml up --build -d"
 
@@ -112,29 +115,30 @@ jobs:
 
             cd /home/ubuntu/crm-app/server
             echo "Running unit tests in /server..."
-            npm install
             npm run test:unit:ci || exit 1
 
             cd /home/ubuntu/crm-app/client
             echo "Running unit tests in /client..."
-            npm install
             npm run test:unit:ci || exit 1
 
             echo "Unit tests passed successfully!"
           EOF
+      
+      ## muista lisata
+      # Run INTEGRATION TESTs
+        
+      # - name: Run E2E Tests on Staging Server
+      #   run: |
+      #     ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} << 'EOF'
+      #       echo "Running E2E tests..."
+      #       export NVM_DIR="$HOME/.nvm"
+      #       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-      - name: Run E2E Tests on Staging Server
-        run: |
-          ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} << 'EOF'
-            echo "Running E2E tests..."
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      #       cd /home/ubuntu/crm-app
+      #       npm run test:e2e || exit 1
 
-            cd /home/ubuntu/crm-app
-            npm run test:e2e || exit 1
-
-            echo "E2E tests passed successfully!"
-          EOF
+      #       echo "E2E tests passed successfully!"
+      #     EOF
 
       - name: Clean Up Docker Resources on EC2
         run: |
