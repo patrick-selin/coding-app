@@ -4,9 +4,20 @@ on:
   push:
     branches: [main]
 
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
     steps:
       - name: Heippa world
         run: echo "Deploying to prod..."
+
+    # infra terraform
+    # paivita ecs, task defenitions
+    # is app runnin?
+
+    # run e2e taas?
+    #
