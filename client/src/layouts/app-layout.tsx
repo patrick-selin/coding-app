@@ -18,8 +18,4 @@ const AppLayout = () => {
   );
 };
 
-<<<<<<< HEAD
 export default AppLayout;
-=======
-export default AppLayout;
->>>>>>> b259e4d870b5e787374fae5209604ff5271b57a2
