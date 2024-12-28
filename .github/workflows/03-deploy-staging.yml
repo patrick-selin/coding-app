@@ -73,13 +73,18 @@ jobs:
         run: |
           ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} "
             cd /home/ubuntu/crm-app &&
+
             echo 'Cleaning working directory...' &&
-            git fetch origin &&
-            git checkout ${{ github.ref_name }} &&
-            git reset --hard origin/${{ github.ref_name }} &&
+            git fetch origin dev &&
+            git reset --hard origin/dev &&
             git clean -fd &&
+
+            echo 'Stopping existing Docker services...' &&
             docker-compose --env-file .env -f docker-compose.stag.yml down &&
+
+            echo 'Pulling latest Docker images...' &&
             docker-compose --env-file .env -f docker-compose.stag.yml pull &&
+            echo 'Starting updated Docker services...' &&
             docker-compose --env-file .env -f docker-compose.stag.yml up --build -d"
 
       - name: Verify Deployment
@@ -123,10 +128,10 @@ jobs:
 
             echo "Unit tests passed successfully!"
           EOF
-      
+
       ## muista lisata
       # Run INTEGRATION TESTs
-        
+
       # - name: Run E2E Tests on Staging Server
       #   run: |
       #     ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} << 'EOF'
