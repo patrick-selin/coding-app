@@ -19,23 +19,3 @@ const AppLayout = () => {
 };
 
 export default AppLayout;
-
-// import { Outlet } from "react-router";
-// import Navbar from "../components/navbar/navbar";
-// import Sidebar from "../components/sidebar/sidebar";
-
-// const MainLayout = () => {
-//   return (
-//     <div className="main-layout">
-//       <Navbar />
-//       <div className="content-wrapper">
-//         <Sidebar />
-//         <main className="main-content">
-//           <Outlet /> {/* Render child routes here */}
-//         </main>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default MainLayout;
