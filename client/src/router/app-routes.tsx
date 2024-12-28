@@ -14,7 +14,6 @@ import SignIn from "../pages/sign-in";
 import Register from "../pages/register";
 //
 import ProtectedRoute from "./protected-route";
-
 // import AdminRoute from "./admin-route";
 
 // Define the routes
