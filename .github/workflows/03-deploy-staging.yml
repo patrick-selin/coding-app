@@ -51,6 +51,11 @@ jobs:
           echo "SERVER_IMAGE=$SERVER_IMAGE"
           echo "FRONTEND_IMAGE=$FRONTEND_IMAGE"
 
+      - name: Debug Image Tags
+        run: |
+          echo "Server Image: ${{ secrets.DOCKERHUB_USERNAME }}/crm-app:server-${{ github.sha }}"
+          echo "Client Image: ${{ secrets.DOCKERHUB_USERNAME }}/crm-app:client-${{ github.sha }}"
+
       - name: Create .env File for Staging
         run: |
           echo "SERVER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/crm-app:server-${{ github.sha }}" > .env
@@ -64,11 +69,14 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.AWS_EC2_SSH_PRIVATE_KEY }}
 
+      - name: Transfer .env File to EC2
+        run: |
+          scp -o StrictHostKeyChecking=no .env ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }}:/home/ubuntu/crm-app/.env
+
       - name: Add EC2 to Known Hosts
         run: |
           ssh-keyscan -H ${{ secrets.AWS_EC2_PUBLIC_IP }} >> ~/.ssh/known_hosts
 
-      # muista pull changes from repo, branch that has
       - name: Deploy Updated Compose to Staging
         run: |
           ssh ubuntu@${{ secrets.AWS_EC2_PUBLIC_IP }} "
