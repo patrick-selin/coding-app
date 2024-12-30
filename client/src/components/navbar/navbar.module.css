@@ -1,0 +1,6 @@
+.test {
+  /* background-color: cyan; */
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}

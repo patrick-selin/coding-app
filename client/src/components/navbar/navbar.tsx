@@ -1,9 +1,10 @@
 import { Link } from "react-router";
 import ThemeSwitcher from "../theme-switcher/theme-switcher";
+import classes from "./navbar.module.css";
 
 const Navbar = () => {
   return (
-    <header className="navbar">
+    <header className={classes.test}>
       <div className="logo">
         <Link to="/">Logo</Link>
       </div>

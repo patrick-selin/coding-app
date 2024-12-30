@@ -1,7 +1,7 @@
 // pages/products.tsx
 
-function Products() {
+const Products = () => {
   return <div>Products page</div>;
-}
+};
 
 export default Products;
