@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource/public-sans": "^5.1.2",
     "@mantine/charts": "^7.14.3",
     "@mantine/core": "^7.14.3",
     "@mantine/dates": "^7.14.3",

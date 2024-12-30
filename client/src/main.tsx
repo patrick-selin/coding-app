@@ -5,16 +5,12 @@ import AppRoutes from "./router/app-routes";
 import "@mantine/core/styles.css";
 //
 import "./styles/global.css";
-import { MantineProvider, createTheme } from "@mantine/core";
-
-const theme = createTheme({
-  fontFamily: "Open Sans, sans-serif",
-  primaryColor: "cyan",
-});
+import { MantineProvider } from "@mantine/core";
+import mantineTheme from "./styles/mantine-theme";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <MantineProvider theme={theme}>
+    <MantineProvider theme={mantineTheme} withNormalizeCSS withGlobalStyles>
       <AppRoutes />
     </MantineProvider>
   </StrictMode>
