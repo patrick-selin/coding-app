@@ -1,6 +1,6 @@
 // layouts/app-layout.tsx
 import { Outlet } from "react-router";
-import Navbar from "../components/navbar/navbar";
+import Header from "../components/header/header";
 import Footer from "../components/footer/footer";
 import { Container, useMantineTheme } from "@mantine/core";
 import classes from "./app-layout.module.css";
@@ -11,7 +11,7 @@ const AppLayout = () => {
 
   return (
     <div className={classes.appLayout}>
-      <Navbar />
+      <Header/>
       <main className="main-content">
         <Container size="lg">
           <Outlet />

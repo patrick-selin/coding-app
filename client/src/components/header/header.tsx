@@ -1,8 +1,8 @@
 import { Link } from "react-router";
 import ThemeSwitcher from "../theme-switcher/theme-switcher";
-import classes from "./navbar.module.css";
+import classes from "./header.module.css";
 
-const Navbar = () => {
+const Header = () => {
   return (
     <header className={classes.test}>
       <div className="logo">
@@ -23,4 +23,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Header;
