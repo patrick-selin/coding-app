@@ -3,10 +3,10 @@ import React from "react";
 import { Navigate } from "react-router";
 
 // temp mock auth state
-const isAuthenticated = true; 
+const isAuthenticated = false; // temp auth
 
 interface ProtectedRouteProps {
-  children: React.ReactNode; 
+  children: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {

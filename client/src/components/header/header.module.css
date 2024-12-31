@@ -1,6 +1,52 @@
-.test {
-  /* background-color: cyan; */
+.header2 {
+  width: 100%;
+  padding: 1rem 2rem;
+  border-bottom: 0.2px solid var(--mantine-color-gray-2);
+  box-sizing: border-box;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--mantine-color-blue-6);
+  text-decoration: none;
+}
+
+.nav {
   display: flex;
-  flex-direction: row;
-  gap: 2rem;
+  gap: 1rem;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--mantine-color-gray-7);
+  font-size: 1rem;
+}
+
+.active {
+  font-weight: bold;
+  color: var(--mantine-color-blue-7);
+}
+
+.burger {
+  display: none;
+}
+
+.drawerNav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-left: 2rem;
+}
+
+.drawerLink {
+  text-decoration: none;
+  color: var(--mantine-color-gray-7);
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .burger {
+    display: block;
+  }
 }
