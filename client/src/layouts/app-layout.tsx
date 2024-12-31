@@ -11,8 +11,8 @@ const AppLayout = () => {
 
   return (
     <div className={classes.appLayout}>
-      <Header/>
-      <main className="main-content">
+      <Header />
+      <main className={classes.mainContent}>
         <Container size="lg">
           <Outlet />
         </Container>
