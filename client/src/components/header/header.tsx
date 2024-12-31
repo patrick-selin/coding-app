@@ -17,6 +17,9 @@ const Header = () => {
       </nav>
       <div className="navbar-right">
         <ThemeSwitcher />
+        <p>notif</p>
+        <Link to="sign-in">Sign in</Link>
+        <Link to="register">Register</Link>
         {/* <img src="/path-to-avatar.jpg" alt="User Avatar" className="avatar" /> */}
       </div>
     </header>

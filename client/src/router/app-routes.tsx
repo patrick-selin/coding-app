@@ -16,7 +16,6 @@ import Register from "../pages/register";
 import ProtectedRoute from "./protected-route";
 // import AdminRoute from "./admin-route";
 
-// Define the routes
 const router = createBrowserRouter([
   {
     path: "/",
@@ -71,14 +70,10 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      { path: "sign-in", element: <SignIn /> },
+      { path: "register", element: <Register /> },
     ],
   },
-  // {
-  //   path: "/admin-panel",
-  //   element: <AdminRoute><AdminPanel /></AdminRoute>, // Admin-only route
-  // },
-  { path: "/sign-in", element: <SignIn /> },
-  { path: "/register", element: <Register /> },
   { path: "*", element: <div>Page Not Found</div> },
 ]);
 

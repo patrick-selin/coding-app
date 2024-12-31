@@ -1,5 +1,4 @@
 // styles/mantine-theme.ts
-// import { createTheme } from "@mantine/core";
 import { MantineThemeOverride } from "@mantine/core";
 
 const mantineTheme: MantineThemeOverride = {
@@ -13,7 +12,7 @@ const mantineTheme: MantineThemeOverride = {
         lineHeight: "1.3",
       },
       h2: {
-        fontSize: "calc(2.625rem * var(--mantine-scale))",
+        fontSize: "calc(1.625rem * var(--mantine-scale))",
         lineHeight: "1.35",
       },
       h3: {
