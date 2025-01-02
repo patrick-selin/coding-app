@@ -132,7 +132,9 @@ const Header = () => {
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  isActive ? `${classes.link} ${classes.active}` : classes.link
+                  isActive
+                    ? `${classes.link} ${classes.linkactive}`
+                    : classes.link
                 }
                 onClick={closeDrawer}
               >
@@ -147,7 +149,10 @@ const Header = () => {
                 <ActionIcon variant="light" radius="xl">
                   <BellIcon className={classes.icon} />
                 </ActionIcon>
-                <Avatar alt="User Avatar" radius="xl" />
+                <ActionIcon variant="light" radius="xl">
+                  <Avatar alt="User Avatar" radius="xl" />
+                </ActionIcon>
+                s
               </>
             ) : (
               <>
