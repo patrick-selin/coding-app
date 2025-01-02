@@ -12,6 +12,7 @@ function ThemeSwitcher() {
   const theme = useMantineTheme();
 
   return (
+    
     <ActionIcon
       variant="outline"
       onClick={() => toggleColorScheme()}

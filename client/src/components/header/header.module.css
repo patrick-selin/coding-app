@@ -10,22 +10,15 @@
   align-items: center;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--mantine-color-gray-7); /* Default for light mode */
   text-decoration: none;
-  transition: color 0.2s ease-in-out; /* Smooth transition for theme switching */
+  transition: color 0.2s ease-in-out;
 }
 
-/* Dark mode ovezrride */
-html[data-theme="dark"] .logo {
-  color: var(--mantine-color-gray-0); /* Lighter color for dark mode */
-}
-
-/* Logo icon (optional) */
 .logoicon {
   height: 1.5rem;
   width: 1.5rem;
-  margin-right: 0.5rem; /* Space between icon and text */
-  color: inherit; /* Inherit color from the logo text */
+  margin-right: 0.5rem;
+  color: inherit;
 }
 
 .nav {
@@ -35,35 +28,27 @@ html[data-theme="dark"] .logo {
 
 .link {
   text-decoration: none;
-  color: var(--mantine-color-gray-7); /* Default for light mode */
   font-size: 1rem;
   font-weight: 700;
   transition: color 0.2s ease-in-out;
 }
 
-/* Visited links */
-.link:visited {
-  color: inherit; /* Matches the default color */
+.linkactive {
+  color: var(--mantine-color-blue-7);
+  font-weight: bold;
+  border-bottom: 2px solid var(--mantine-color-blue-7);
+  text-decoration: none;
 }
 
-/* Hover state */
 .link:hover {
-  color: var(--mantine-color-blue-7); /* Highlight on hover */
+  color: var(--mantine-color-blue-7);
 }
 
-/* Active link styles */
 .active {
-  color: var(--mantine-color-blue-7); /* Active link color */
   font-weight: bold;
 }
 
-/* Dark mode styles */
-html[data-theme="dark"] .link {
-  color: var(--mantine-color-gray-0); /* Lighter color for dark mode */
-}
-
-.bellicon {
-  height: 1.5rem;
-  width: 1.55rem;
-  color: var(--mantine-color-gray-6);
+.link:visited {
+  text-decoration: none;
+  color: inherit;
 }

@@ -8,6 +8,8 @@ import {
   ScrollArea,
   ActionIcon,
   Avatar,
+  useMantineTheme,
+  useMantineColorScheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { NavLink } from "react-router";
@@ -19,6 +21,11 @@ import { NAV_LINKS } from "../../utils/constants/constants";
 const Header = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
+
+  const { colorScheme } = useMantineColorScheme();
+  const isDark = colorScheme === "dark";
+  const theme = useMantineTheme();
+
   const isAuthenticated = true;
 
   return (
@@ -40,7 +47,7 @@ const Header = () => {
                   to={link.path}
                   className={({ isActive }) =>
                     isActive
-                      ? `${classes.link} ${classes.active}`
+                      ? `${classes.link} ${classes.linkactive}`
                       : classes.link
                   }
                 >
@@ -55,8 +62,25 @@ const Header = () => {
             <ThemeSwitcher />
             {isAuthenticated ? (
               <>
-                <ActionIcon variant="light" radius="xl">
-                  <BellIcon className={classes.bellicon} />
+                <ActionIcon
+                  variant="outline"
+                  radius="xl"
+                  size="lg"
+                  color="pink"
+                  style={{
+                    borderColor: isDark
+                      ? theme.colors.dark[4]
+                      : theme.colors.gray[4],
+                  }}
+                >
+                  <BellIcon
+                    className="h-1 w-1"
+                    style={{
+                      color: isDark
+                        ? theme.colors.dark[0]
+                        : theme.colors.gray[7],
+                    }}
+                  />
                 </ActionIcon>
                 <Avatar alt="User Avatar" radius="xl" name="PS" />
               </>
