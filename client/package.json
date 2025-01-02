@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@fontsource/public-sans": "^5.1.2",
+    "@heroicons/react": "^2.2.0",
     "@mantine/charts": "^7.14.3",
     "@mantine/core": "^7.14.3",
     "@mantine/dates": "^7.14.3",
@@ -24,6 +25,7 @@
     "@mantine/hooks": "^7.14.3",
     "@mantine/modals": "^7.14.3",
     "@mantine/notifications": "^7.14.3",
+    "@tabler/icons": "^1.115.0",
     "axios": "^1.7.4",
     "dayjs": "^1.11.13",
     "react": "^18.3.1",

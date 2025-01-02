@@ -12,46 +12,43 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { NavLink } from "react-router";
 import ThemeSwitcher from "../theme-switcher/theme-switcher";
-// import { IconBell } from "@tabler/icons-react";
+import { BellIcon, QueueListIcon } from "@heroicons/react/24/outline";
 import classes from "./header.module.css";
-
-// Navigation links array
-const NAV_LINKS = [
-  { path: "/dashboard", label: "Dashboard" },
-  { path: "/customers", label: "Customers" },
-  { path: "/sales", label: "Sales" },
-  { path: "/products", label: "Products" },
-  { path: "/analytics", label: "Analytics" },
-];
+import { NAV_LINKS } from "../../utils/constants/constants";
 
 const Header = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   return (
     <Box>
-      <header className={classes.header2}>
+      <header className={classes.header}>
         <Group justify="space-between" h="100%">
           {/* Logo */}
           <NavLink to="/" className={classes.logo}>
-            MyApp
+            <QueueListIcon className={classes.logoicon} />
+            CRM App
           </NavLink>
 
           {/* Desktop navigation */}
-          <Group h="100%" visibleFrom="sm">
-            {NAV_LINKS.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                className={({ isActive }) =>
-                  isActive ? `${classes.link} ${classes.active}` : classes.link
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
-          </Group>
+          <nav className={classes.nav}>
+            <Group h="100%" visibleFrom="sm">
+              {NAV_LINKS.map((link) => (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    isActive
+                      ? `${classes.link} ${classes.active}`
+                      : classes.link
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+            </Group>
+          </nav>
 
           {/* Right-side actions */}
           <Group visibleFrom="sm" gap="sm">
@@ -59,15 +56,9 @@ const Header = () => {
             {isAuthenticated ? (
               <>
                 <ActionIcon variant="light" radius="xl">
-                  {/* <IconBell size="1.5rem" /> */}
+                  <BellIcon className={classes.bellicon} />
                 </ActionIcon>
-
-                {/* User Avatar */}
-                <Avatar
-                  src="https://via.placeholder.com/40"
-                  alt="User Avatar"
-                  radius="xl"
-                />
+                <Avatar alt="User Avatar" radius="xl" name="PS" />
               </>
             ) : (
               <>
@@ -126,19 +117,13 @@ const Header = () => {
             ))}
           </nav>
           <Divider my="sm" />
-
           <Group justify="center" grow pb="xl" px="md">
-            The
             {isAuthenticated ? (
               <>
                 <ActionIcon variant="light" radius="xl">
-                  {/* <IconBell size="1.5rem" /> */}
+                  <BellIcon className={classes.icon} />
                 </ActionIcon>
-                <Avatar
-                  src="https://via.placeholder.com/40"
-                  alt="User Avatar"
-                  radius="xl"
-                />
+                <Avatar alt="User Avatar" radius="xl" />
               </>
             ) : (
               <>

@@ -3,7 +3,7 @@ import React from "react";
 import { Navigate } from "react-router";
 
 // temp mock auth state
-const isAuthenticated = false; // temp auth
+const isAuthenticated = true; // temp auth
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

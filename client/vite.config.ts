@@ -5,6 +5,9 @@ import react from "@vitejs/plugin-react";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  optimizeDeps: {
+    include: ["@heroicons/react"],
+  },
   test: {
     environment: "jsdom",
   },
@@ -12,19 +15,9 @@ export default defineConfig({
     outDir: "dist",
     rollupOptions: {
       output: {
-        format: 'es', // For ES module output
-      }
+        format: "es", // For ES module output
+      },
     },
     sourcemap: true,
   },
-  // server: {
-  //   proxy: {
-  //     "/api1": {
-  //       target: "http://localhost:3333",
-  //       changeOrigin: true,
-  //       secure: false, //
-  //       rewrite: (path) => path.replace(/^\/api1/, "/api1"),
-  //     },
-  //   },
-  // },
 });

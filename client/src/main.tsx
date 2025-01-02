@@ -10,7 +10,7 @@ import mantineTheme from "./styles/mantine-theme";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <MantineProvider theme={mantineTheme}>
+    <MantineProvider theme={mantineTheme} withGlobalStyles withNormalizeCSS>
       <AppRoutes />
     </MantineProvider>
   </StrictMode>
