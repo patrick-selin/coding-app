@@ -1,16 +1,17 @@
 // main.tsx
+import "@mantine/core/styles.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import AppRoutes from "./router/app-routes";
-import "@mantine/core/styles.css";
+
 //
 import "./styles/global.css";
 import { MantineProvider } from "@mantine/core";
-import mantineTheme from "./styles/mantine-theme";
+import theme from "./styles/mantine-theme";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <MantineProvider theme={mantineTheme}>
+    <MantineProvider theme={theme}>
       <AppRoutes />
     </MantineProvider>
   </StrictMode>

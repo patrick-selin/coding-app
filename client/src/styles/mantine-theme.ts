@@ -1,8 +1,9 @@
 // styles/mantine-theme.ts
-import { MantineThemeOverride } from "@mantine/core";
+import { createTheme } from "@mantine/core";
 
-const mantineTheme: MantineThemeOverride = {
+const theme = createTheme({
   fontFamily: "Public Sans, sans-serif",
+
   primaryColor: "blue",
   headings: {
     fontFamily: "Public Sans, sans-serif",
@@ -33,33 +34,22 @@ const mantineTheme: MantineThemeOverride = {
       },
     },
   },
-
-  //   components: {
-  //     Title: {
-  //       styles: (theme) => ({
-  //         root: {
-  //           fontFamily: theme.headings.fontFamily, // Apply headings.fontFamily to Title
-  //         },
-  //       }),
-  //     },
-  //   },
   colors: {
     dark: [
-      "#d5d7e0",
-      "#acaebf",
-      "#8c8fa3",
-      "#666980",
-      "#4d4f66",
-      "#34354a",
-      "#2b2c3d",
-      //   "#1d1e30", // dark theme body bg color
-      "#292C43", // dark theme body bg color
-      "#0c0d21",
-      "#01010a",
+      "#C9C9C9",
+      "#b8b8b8",
+      "#828282",
+      "#696969",
+      "#424242",
+      "#3b3b3b",
+      "#2e2e2e",
+      "#242424", //   "#1d1e30", // dark theme body bg color
+      "#1f1f1f",
+      "#141414",
     ],
   },
 
   // other colors: orange, green/teal, pink
-};
+});
 
-export default mantineTheme;
+export default theme;

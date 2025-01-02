@@ -1,10 +1,11 @@
 # dev.Dockerfile for client/frontend
-FROM node:20.11.1-alpine
+FROM node:20.11.1
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
+RUN rm -rf node_modules package-lock.json
 RUN yarn install
 
 COPY tsconfig.json vite.config.ts ./

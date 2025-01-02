@@ -4,6 +4,7 @@ import Header from "../components/header/header";
 import Footer from "../components/footer/footer";
 import { Container, useMantineTheme } from "@mantine/core";
 import classes from "./app-layout.module.css";
+// import ThemeInfo from "../components/theme-info";
 
 const AppLayout = () => {
   const theme = useMantineTheme();
@@ -11,6 +12,7 @@ const AppLayout = () => {
 
   return (
     <div className={classes.appLayout}>
+      {/* <ThemeInfo /> */}
       <Header />
       <main className={classes.mainContent}>
         <Container size="lg">

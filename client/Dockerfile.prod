@@ -1,5 +1,5 @@
 # Dockerfile.prod for client/frontend
-FROM node:20.11.1-alpine AS builder
+FROM node:20.11.1 AS builder
 
 WORKDIR /usr/src/app
 
@@ -11,7 +11,7 @@ COPY . .
 ENV VITE_BASE_URL=/api1
 RUN npm run build
 
-FROM nginx:1.27.1-alpine
+FROM nginx:1.27.1
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
