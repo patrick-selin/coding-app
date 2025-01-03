@@ -8,6 +8,13 @@
       "when": 1734511684375,
       "tag": "0000_classy_baron_strucker",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1735901266755,
+      "tag": "0001_sturdy_jackal",
+      "breakpoints": true
     }
   ]
 }
