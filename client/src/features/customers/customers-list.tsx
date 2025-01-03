@@ -24,6 +24,7 @@ const CustomersList = () => {
               <Table.Th>Name</Table.Th>
               <Table.Th>Email</Table.Th>
               <Table.Th>Last Order</Table.Th>
+              {/* Payment status: "Paid", "Pending", "Overdue". */}
               <Table.Th>Number of Orders</Table.Th>
               <Table.Th>Total Spent</Table.Th>
             </Table.Tr>

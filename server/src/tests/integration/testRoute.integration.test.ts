@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import request from "supertest";
 import app from "../../../src/server";
-import { testItems as testItemsDb } from ".././../db/schema";
+import { testItems as testItemsDb } from "../../db/schemas/schema";
 import { db } from "../../db/db";
 
 beforeAll(() => {
