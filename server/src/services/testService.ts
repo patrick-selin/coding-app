@@ -1,6 +1,6 @@
 // testServices.js
 
-import { testItems as testItemsDb } from "../db/schema";
+import { testItems as testItemsDb } from "../db/schemas/schema";
 import { DbClient } from "../../types/db"; //
 import { v4 as uuidv4 } from "uuid";
 
